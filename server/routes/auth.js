@@ -1,10 +1,11 @@
+const jwt = require('jsonwebtoken');
+const auth = require('../middleware/auth');
 const express = require('express');
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 
 const router = express.Router();
 
-// Register
 router.post('/register', async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
 
@@ -23,13 +24,22 @@ router.post('/register', async (req, res) => {
       password: hashedPassword
     });
 
-    res.status(201).json({ message: 'User created', userId: user._id });
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    res.status(201).json({
+      message: 'User created',
+      token,
+      userId: user._id
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// Login
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -40,7 +50,26 @@ router.post('/login', async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
-    res.json({ message: 'Login successful', userId: user._id });
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    res.json({
+      message: 'Login successful',
+      token,
+      userId: user._id
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.get('/me', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    res.json(user);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
