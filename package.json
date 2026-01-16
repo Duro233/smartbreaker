@@ -1,7 +1,6 @@
 {
   "name": "smartbreaker",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -25,5 +24,6 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.1.4",
     "nodemailer": "^7.0.12"
-  }
+  },
+  "description": ""
 }
