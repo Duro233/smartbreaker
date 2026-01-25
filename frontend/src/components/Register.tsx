@@ -16,8 +16,12 @@ export default function Register() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await registerUser(form);
-      alert('Registration successful');
+      const res = await registerUser(form);
+      if(res.status === 201)
+      {
+        console.log("Registration Success");
+        window.location.href = '/home';
+      }
     } catch (err: any) {
       alert(err.response?.data?.message || 'Registration failed');
     }

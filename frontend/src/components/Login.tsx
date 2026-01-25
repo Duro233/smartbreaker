@@ -7,6 +7,7 @@ export default function Login() {
     password: ''
   });
 
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -16,7 +17,15 @@ export default function Login() {
     try {
       const res = await loginUser(form);
       localStorage.setItem('token', res.data.token);
-      alert('Login successful');
+      console.log(res.data.token);
+
+      console.log(res);
+
+      if(res.status === 200)
+      {
+        console.log("Login Success");
+        //window.location.href = '/home';
+      }
     } catch (err: any) {
       alert(err.response?.data?.message || 'Login failed');
     }

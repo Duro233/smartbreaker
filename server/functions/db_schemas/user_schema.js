@@ -1,10 +1,24 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
-const mongoose_user_db = mongoose.connection.useDb('Users');
+const mongoose_user_db = mongoose.connection.useDb('smartbreaker');
 
 const userSchema = new mongoose.Schema(
 {
+    firstName:
+    {
+        type: String,
+        required: true,
+        trim: true
+    },
+
+    lastName:
+    {
+        type: String,
+        required: true,
+        trim: true
+    },
+
     email:
     {
         type: String,
@@ -21,12 +35,20 @@ const userSchema = new mongoose.Schema(
         select: false
     },
 
+    userID:
+    {
+        type: Number,
+        required: true,
+        trim: true
+    },
+
     devices:
     {
         ofString: [String]
     }
     }
 );
+
 
 userSchema.methods.checkPassword = async function(password)
 {
@@ -39,6 +61,11 @@ userSchema.pre("save", async function()
     this.passwordHash = await bcrypt.hash(this.passwordHash, 12);
 });
 
-userSchema.index({email : 1}, {unique:true});
+userSchema.statics.getUserCount = async function()
+{
+    return this.countDocuments();
+}
 
-export const User = mongoose_user_db.model("User", userSchema);
+//userSchema.index({email : 1}, {unique:true});
+
+export const User = mongoose_user_db.model("users", userSchema);
