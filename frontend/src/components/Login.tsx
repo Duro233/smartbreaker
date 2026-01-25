@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { loginUser } from '../api/auth';
+import { loginUser } from '../routes/auth';
 
 export default function Login() {
   const [form, setForm] = useState({

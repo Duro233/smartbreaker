@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { registerUser } from '../api/auth';
+import { registerUser } from '../routes/auth';
 
 export default function Register() {
   const [form, setForm] = useState({
