@@ -1,0 +1,59 @@
+name: Full Deployment Pipeline
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 22.14.0
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm install 
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_ed25519
+        chmod 600 ~/.ssh/id_ed25519
+        ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+    - name: Deploy to DigitalOcean Droplet
+      run: |
+        ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
+        cd /var/www/thesmartbuilder.xyz
+        git fetch origin main
+        CHANGED=$(git diff --name-only HEAD origin/main)
+        git reset --hard origin/main
+
+        if echo "$CHANGED" | grep -q '^server/'; then
+          cd /var/www/thesmartbuilder.xyz/server
+          pm2 restart smartbreaker
+          pm2 restart smartbreaker-api
+        fi
+
+        if echo "$CHANGED" | grep -q '^frontend/'; then
+          cd /var/www/thesmartbuilder.xyz/frontend
+          npm run build
+          npm run build
+        fi
+        EOF
