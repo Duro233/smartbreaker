@@ -30,7 +30,7 @@ import {webSocketClient} from './functions/websocket_client/websocket_client.js'
 
 
 // Cors Nonced
-const allowedOrigins = ['http://0.0.0.0:5173', 'http://localhost:5173'];
+const allowedOrigins = ['http://0.0.0.0:5173', 'http://localhost:5173', 'http://thesmartbuilder.xyz:5173'];
 app.use(cors( {origin: allowedOrigins, credentials : true}));
 app.use(bodyParser.json());
 
