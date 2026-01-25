@@ -27,10 +27,9 @@ import WebSocket from 'ws';
 // Functions for handling full-duplex communication
 import {webSocketDashboard} from './functions/websocket_dashboard/websocket_dashboard.js';
 import {webSocketClient} from './functions/websocket_client/websocket_client.js';
-console.log("I am being trolllllled");
 
 // Cors Nonced
-const allowedOrigins = ['http://0.0.0.0:5173', 'http://localhost:5173', 'http://thesmartbuilder.xyz:5173'];
+const allowedOrigins = ['http://0.0.0.0:5173', 'http://localhost:5173', 'http://134.199.198.51:5000'];
 app.use(cors( {origin: allowedOrigins, credentials : true}));
 app.use(bodyParser.json());
 
