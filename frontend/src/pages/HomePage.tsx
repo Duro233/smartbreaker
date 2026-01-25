@@ -8,6 +8,7 @@ export default function HomePage()
     <div>
       <h2>Home Page</h2>
         <h2>{userInfo?.first} {userInfo?.last}</h2>
+        <h3>I am gay</h3>
     </div>
   );
 } 
