@@ -40,20 +40,25 @@ jobs:
     - name: Deploy to DigitalOcean Droplet
       run: |
         ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
-        cd /var/www/thesmartbuilder.xyz
-        git fetch origin main
-        CHANGED=$(git diff --name-only HEAD origin/main)
-        git reset --hard origin/main
-
-        if echo "$CHANGED" | grep -q '^server/'; then
-          cd /var/www/thesmartbuilder.xyz/server
-          pm2 restart smartbreaker
-          pm2 restart smartbreaker-api
-        fi
-
-        if echo "$CHANGED" | grep -q '^frontend/'; then
-          cd /var/www/thesmartbuilder.xyz/frontend
-          npm run build
-          npm run build
-        fi
+          set -euxo pipefail
+    
+          cd /var/www/thesmartbuilder.xyz
+          git fetch origin main
+          CHANGED="$(git diff --name-only HEAD..origin/main)"
+          echo "CHANGED FILES:"
+          echo "$CHANGED"
+          git reset --hard origin/main
+    
+          if echo "$CHANGED" | grep -qE '^(smartbreaker/)?server/'; then
+            cd /var/www/thesmartbuilder.xyz/smartbreaker/server || cd /var/www/thesmartbuilder.xyz/server
+            npm ci
+            pm2 restart smartbreaker --update-env || true
+            pm2 restart smartbreaker-api --update-env || true
+          fi
+    
+          if echo "$CHANGED" | grep -qE '^(smartbreaker/)?frontend/'; then
+            cd /var/www/thesmartbuilder.xyz/smartbreaker/frontend || cd /var/www/thesmartbuilder.xyz/frontend
+            npm ci
+            npm run build
+          fi
         EOF
