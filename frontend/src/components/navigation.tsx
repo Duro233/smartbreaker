@@ -6,12 +6,21 @@ import {
   Text,
   Anchor,
   Stack,
+  ActionIcon,
+  useMantineColorScheme,
+  useComputedColorScheme,
+  useSafeMantineTheme,
+  MantineProvider
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { Icon123, IconAdjustments, IconMoon, IconSun } from '@tabler/icons-react';
+import { useState } from 'react';
 
 export default function Navigation() {
   const [opened, { toggle, close }] = useDisclosure();
-
+  //const [toggleNight, setToggleNight] = useState(true);
+  const { setColorScheme, toggleColorScheme } = useMantineColorScheme();
+  const computed = useComputedColorScheme('light', {getInitialValueInEffect : true})
   const links = ['Home', 'Dashboard', 'Settings'];
 
   return (
@@ -45,6 +54,11 @@ export default function Navigation() {
                 {link}
               </Anchor>
             ))}
+            <Anchor>
+                <ActionIcon radius='xl' aria-label='toggle' className="navToggle" onClick={() => toggleColorScheme()}>
+                    {computed === 'light' ? <IconMoon /> : <IconSun /> }
+                </ActionIcon>
+            </Anchor>
           </Group>
         </Group>
       </AppShell.Header>

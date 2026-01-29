@@ -4,6 +4,9 @@
   --app-card: #ffffff;
   --app-text: #0f172a;
   --app-border: #e2e8f0;
+  --app-button: #368862;
+  --app-button-hover: #42a563;
+  --app-button-text: #e2e8f0;
 }
 :root[data-mantine-color-scheme="dark"] {
   --app-bg: #0b1220;
@@ -12,6 +15,7 @@
   --app-border: #1f2a44;
   --app-button: #368862;
   --app-button-hover: #42a563;
+  --app-button-text: #e2e8f0;
 }
 
 :root {
@@ -49,6 +53,42 @@
   color: var(--app-button-hover);
   transition: color 0.2s ease-in-out;
 }
+
+/* Navigation Bar */
+.mantine-Group-root
+{
+  background: var(--app-bg)
+}
+
+/* Mobile Navigation Bar */
+.mantine-AppShell-navbar
+{
+  background-color: var(--app-bg);
+}
+
+/* Navigation Bar Link Text */
+.mantine-Text-root
+{
+  color: var(--app-button)
+}
+
+/* Navigation Dark/Light Mode Toggle Button */
+.navToggle
+{
+  background-color: var(--app-button);
+  color: var(--app-button-text);
+}
+
+.navToggle:hover
+{
+  background-color: var(--app-button-hover);
+  transition: background-color 0.2s ease-in-out;
+}
+
+
+
+
+
 
 
 
