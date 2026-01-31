@@ -1,25 +1,53 @@
-/* Defining Color Styles for Light and Dark Mode */
+/* =========== Defining Color Styles for Light and Dark Mode ============ */
+/* DARK MODE */
 :root[data-mantine-color-scheme="light"] {
-  --app-bg: #f8fafc;
-  --app-card: #ffffff;
-  --app-text: #0f172a;
-  --app-border: #e2e8f0;
-  --app-button: #368862;
-  --app-button-hover: #42a563;
-  --app-button-text: #e2e8f0;
-}
-:root[data-mantine-color-scheme="dark"] {
-  --app-bg: #0b1220;
-  --app-card: #0f172a;
-  --app-text: #e2e8f0;
-  --app-border: #1f2a44;
-  --app-button: #368862;
-  --app-button-hover: #42a563;
-  --app-button-text: #e2e8f0;
+  /* Primary Background Colors & Asssociated Alts */
+  --app-bg: #ebeff3;
+  --app-bg-alt-lighter: #eeeded;
+  --app-bg-alt-darker: #e4e4e4;
+
+  /* Sec. Colors (Accents) */
+  --app-accent: #35de7b;
+  --app-accent-alt-lighter: #4ae68b;
+  --app-accent-alt-darker: #2ac76b;
+  --app-accent-text: #f1f1f1;
+
+  /* Primary Buttons (gradients) */
+  --app-button: linear-gradient(30deg, #35de7b, #65d895);
+  --app-button-hover: linear-gradient(30deg, #72f3a8, #65d895);;
+
+ /* Sec. Buttons */
+  --app-button-sec: #35de7b;
+  --app-button-sec-hover: #2ac76b;
+  
+  
 }
 
+/* LIGHT MODE */
+:root[data-mantine-color-scheme="dark"] {
+  /* Primary Background Colors & Associated Alts */
+  --app-bg: #031b25;
+  --app-bg-alt-lighter: #081e29;
+  --app-bg-alt-darker: #02131a;
+
+  /* Sec. Colors (Accents) */
+  --app-accent: #35de7b;
+  --app-accent-alt-lighter: #4ae68b;
+  --app-accent-alt-darker: #2ac76b;
+  --app-accent-text: #021016;
+
+  /* Primary Buttons (gradients) */
+  --app-button: linear-gradient(30deg, #35de7b, #65d895);
+  --app-button-hover: linear-gradient(30deg, #72f3a8, #65d895);
+
+  /* Sec. Buttons */
+  --app-button-sec: #35de7b;
+  --app-button-sec-hover: #4ae68b;
+}
+
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Inter', sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -31,40 +59,61 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+
 /* Primary Button */
 .mantine-Button-root[data-variant="primary"] {
   background: var(--app-button);
-  color: var(--app-text);
+  color: var(--app-accent-text);
   font-weight: 400;
+  
+  transition: background 0.2s ease-in-out;
+  transition: box-shadow 0.1s ease-in-out, transform 0.2s ease;
+  height: calc(1.6rem * var(--mantine-scale))
 }
 .mantine-Button-root[data-variant="primary"]:hover {
   background: var(--app-button-hover);
-  transition: background 0.2s ease-in-out;
-}
+  box-shadow: 0 1px 15px 1px color-mix(in srgb, var(--app-accent-alt-lighter) 30%, transparent); /* have to do this with glow to actually use variable css styles */
+  transform: scale(1.1);
+  }
 
 
 /* Secondary Button */
 .mantine-Button-root[data-variant="secondary"] {
   background: none;
-  color: var(--app-text);
-  font-weight: 600;
+  color: var(--app-button-sec); 
+  overflow: visible;
+  font-weight: 400;
+  font-size: x-small;
+  height: calc(1.15rem * var(--mantine-scale));
+  width: calc(10rem * var(--mantine-scale));
+  transition: transform 0.2s ease, color 0.2s ease-in-out;
 }
 .mantine-Button-root[data-variant="secondary"]:hover {
-  color: var(--app-button-hover);
-  transition: color 0.2s ease-in-out;
+  color: var(--app-button-sec-hover);
+  transform: scale(1.1);
+  text-shadow:
+    0 0 12px color-mix(in srgb, var(--app-button-sec-hover) 35%, transparent),
+    0 0 12px color-mix(in srgb, var(--app-button-sec-hover) 35%, transparent),
+    0 0 12px color-mix(in srgb, var(--app-button-sec-hover) 35%, transparent);
 }
+.mantine-Button-label{
+  overflow: visible;
+}
+
 
 /* Navigation Bar */
 .mantine-Group-root
 {
-  background: var(--app-bg)
+  background: var(--app-bg-alt-lighter)
 }
+
 
 /* Mobile Navigation Bar */
 .mantine-AppShell-navbar
 {
-  background-color: var(--app-bg);
+  background-color: var(--app-bg-alt-lighter);
 }
+
 
 /* Navigation Bar Link Text */
 .mantine-Text-root
@@ -72,17 +121,64 @@
   color: var(--app-button)
 }
 
+
 /* Navigation Dark/Light Mode Toggle Button */
 .navToggle
 {
-  background-color: var(--app-button);
-  color: var(--app-button-text);
+  background-color: var(--app-accent);
+  color: var(--app-accent-text);
+  transition: background-color 0.2s ease-in-out, box-shadow 0.1s ease-in-out, transform 0.2s ease-in-out;
 }
-
 .navToggle:hover
 {
-  background-color: var(--app-button-hover);
-  transition: background-color 0.2s ease-in-out;
+  background-color: var(--app-accent-alt-lighter);
+  color: var(--app-accent-text);
+  box-shadow: 0 1px 15px 1px color-mix(in srgb, var(--app-accent-alt-lighter) 30%, transparent); /* have to do this with glow to actually use variable css styles */
+  transform: scale(1.03);
+}
+
+
+/* Form Border Styling */
+.form-borders
+{
+  border: 1px;
+  padding:  65px 25px 50px 25px;
+  border-style: solid;
+  border-radius: 8px;
+  border-color: var(--app-accent-alt-darker);
+  background-color: var(--app-bg-alt-lighter);
+  transition: transform 0.3s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.form-borders:hover
+{
+  transform: scale(1.05);
+  box-shadow: 0 1px 20px 0px color-mix(in srgb, var(--app-accent-alt-lighter) 30%, transparent); /* have to do this with glow to actually use variable css styles */
+  border: 2px;
+  border-style: solid;
+  border-color: var(--app-accent-alt-darker);
+}
+
+/* Standard Text Fields */
+.prim-text-fields
+{
+  background-color: var(--app-bg-alt-darker);
+  border-color: var(--app-accent-alt-darker);
+  border-radius: 8px;
+  border-width: 1px;
+  box-shadow: none;
+  transition: border-color 0.1s ease-in-out;
+
+}
+.prim-text-fields:focus-within
+{
+  border-color: var(--app-accent-alt-lighter);
+}
+
+/* Navbar Hamburger (Mobile) */
+.hamburger
+{
+  --burger-color: var(--app-accent-alt-darker);
 }
 
 

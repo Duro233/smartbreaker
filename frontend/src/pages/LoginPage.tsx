@@ -53,11 +53,12 @@ return (
     <div>
         <Navigation />
     </div>
-    <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
+  <form onSubmit={form.onSubmit((values) => handleSubmit(values))} className='form-borders'>
         <TextInput
         withAsterisk
         label="Email"
         placeholder="your@email.com"
+        classNames={{ input : 'prim-text-fields'}}
         key={form.key('email')}
         {...form.getInputProps('email')}
       />
@@ -66,6 +67,7 @@ return (
         withAsterisk
         label="Password"
         placeholder="password"
+        classNames={{ input : 'prim-text-fields'}}
         key={form.key('password')}
         {...form.getInputProps('password')}
       />
@@ -78,7 +80,7 @@ return (
       /> */}
 
       <Stack justify="center" align='center' gap='xs' mt="md">
-        <Button variant="primary" type="submit">Submit</Button>
+        <Button variant="primary" type="submit">Login</Button>
         <Button variant="secondary" onClick={handleRegisterRedirect}>Get Registered</Button>
       </Stack>
     </form>

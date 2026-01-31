@@ -41,10 +41,11 @@ export default function Navigation() {
             <Burger
               opened={opened}
               onClick={toggle}
+              className="hamburger"
               hiddenFrom="sm"
               size="sm"
             />
-            <Text fw={700}>SABRE Smart Break</Text>
+            <Text fw={700}>SABRE Smart Breaker</Text>
           </Group>
 
           {/* Desktop nav links */}
@@ -55,7 +56,7 @@ export default function Navigation() {
               </Anchor>
             ))}
             <Anchor>
-                <ActionIcon radius='xl' aria-label='toggle' className="navToggle" onClick={() => toggleColorScheme()}>
+                <ActionIcon radius='sm' aria-label='toggle' className="navToggle" onClick={() => toggleColorScheme()}>
                     {computed === 'light' ? <IconMoon /> : <IconSun /> }
                 </ActionIcon>
             </Anchor>
