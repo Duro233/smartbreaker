@@ -5,7 +5,7 @@ import { Button, Stack, TextInput, PasswordInput} from '@mantine/core';
 import { useForm } from '@mantine/form';
 
 import Navigation from '../components/navigation';
-import Background from '../components/background/background';
+import Background from '../components/background/Background';
 
 //import classes from '../../src/index.css';
 //import '../index.css';
