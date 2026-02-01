@@ -2,6 +2,7 @@ import axios from 'axios';
 //import { buildPath } from '../utils';
 
 // Build URL path based on whether in prod or dev
+//onst url = buildPath();
 //const url = buildPath();
 
 export const API = axios.create({
