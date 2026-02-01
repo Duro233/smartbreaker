@@ -28,7 +28,6 @@ import WebSocket from 'ws';
 import {webSocketDashboard} from './functions/websocket_dashboard/websocket_dashboard.js';
 import {webSocketClient} from './functions/websocket_client/websocket_client.js';
 
-
 // Cors Nonced
 const allowedOrigins = ['http://0.0.0.0:5173', 'http://localhost:5173', 'http://thesmartbuilder.xyz'];
 app.use(cors( {origin: allowedOrigins, credentials : true}));
