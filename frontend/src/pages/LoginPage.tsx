@@ -5,6 +5,7 @@ import { Button, Stack, TextInput, PasswordInput} from '@mantine/core';
 import { useForm } from '@mantine/form';
 
 import Navigation from '../components/navigation';
+import Background from '../components/background/background';
 
 //import classes from '../../src/index.css';
 //import '../index.css';
@@ -53,7 +54,8 @@ return (
     <div>
         <Navigation />
     </div>
-  <form onSubmit={form.onSubmit((values) => handleSubmit(values))} className='form-borders'>
+  <div>  
+    <form onSubmit={form.onSubmit((values) => handleSubmit(values))} className='form-borders' style={{padding : '65px 35px 50px 35px'}}>
         <TextInput
         withAsterisk
         label="Email"
@@ -84,6 +86,8 @@ return (
         <Button variant="secondary" onClick={handleRegisterRedirect}>Get Registered</Button>
       </Stack>
     </form>
+    <Background />
+    </div>
     </div>
   );
 }

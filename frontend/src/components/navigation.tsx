@@ -21,7 +21,7 @@ export default function Navigation() {
   //const [toggleNight, setToggleNight] = useState(true);
   const { setColorScheme, toggleColorScheme } = useMantineColorScheme();
   const computed = useComputedColorScheme('light', {getInitialValueInEffect : true})
-  const links = ['Home', 'Dashboard', 'Settings'];
+  const links = ['Home', 'Dashboard', 'Settings']; // placeholder for now
 
   return (
     <AppShell
@@ -43,7 +43,7 @@ export default function Navigation() {
               onClick={toggle}
               className="hamburger"
               hiddenFrom="sm"
-              size="sm"
+              size="md"
             />
             <Text fw={700}>SABRE Smart Breaker</Text>
           </Group>

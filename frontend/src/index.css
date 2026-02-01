@@ -68,13 +68,18 @@
   
   transition: background 0.2s ease-in-out;
   transition: box-shadow 0.1s ease-in-out, transform 0.2s ease;
-  height: calc(1.6rem * var(--mantine-scale))
+  height: calc(1.6rem * var(--mantine-scale));
+  touch-action: manipulation;
 }
 .mantine-Button-root[data-variant="primary"]:hover {
   background: var(--app-button-hover);
   box-shadow: 0 1px 15px 1px color-mix(in srgb, var(--app-accent-alt-lighter) 30%, transparent); /* have to do this with glow to actually use variable css styles */
   transform: scale(1.1);
   }
+.mantine-Button-root[data-variant="primary"]:active
+{
+  transform: translateY(2px) scale(1.1);
+}
 
 
 /* Secondary Button */
@@ -95,6 +100,10 @@
     0 0 12px color-mix(in srgb, var(--app-button-sec-hover) 35%, transparent),
     0 0 12px color-mix(in srgb, var(--app-button-sec-hover) 35%, transparent),
     0 0 12px color-mix(in srgb, var(--app-button-sec-hover) 35%, transparent);
+}
+.mantine-Button-root[data-variant="secondary"]:active
+{
+  transform: translateY(2px) scale(1.1);
 }
 .mantine-Button-label{
   overflow: visible;
@@ -134,7 +143,7 @@
   background-color: var(--app-accent-alt-lighter);
   color: var(--app-accent-text);
   box-shadow: 0 1px 15px 1px color-mix(in srgb, var(--app-accent-alt-lighter) 30%, transparent); /* have to do this with glow to actually use variable css styles */
-  transform: scale(1.03);
+  transform: scale(1.1);
 }
 
 
@@ -168,7 +177,6 @@
   border-width: 1px;
   box-shadow: none;
   transition: border-color 0.1s ease-in-out;
-
 }
 .prim-text-fields:focus-within
 {
@@ -178,7 +186,7 @@
 /* Navbar Hamburger (Mobile) */
 .hamburger
 {
-  --burger-color: var(--app-accent-alt-darker);
+  --burger-color: color-mix(in srgb, var(--app-accent-alt-lighter) 90%, white);
 }
 
 
@@ -194,12 +202,14 @@
 
 body {
   background-color: var(--app-bg);
-  margin: 0;
+  position: relative;
   display: flex;
+  margin: 0;
   place-items: center;
   justify-content: center;
   min-width: 320px;
   min-height: 100vh;
+  z-index: -99;
 }
 
 h1 {
