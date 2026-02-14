@@ -5,8 +5,9 @@ import axios from 'axios';
 //onst url = buildPath();
 
 export const API = axios.create({
-  baseURL: 'http://thesmartbuilder.xyz/api',
+  //baseURL: 'http://thesmartbuilder.xyz/api',
   //baseURL: url + '/api', 
+  baseURL: 'http://localhost:5000/api',
   headers: {
     'Content-Type': 'application/json'
   }

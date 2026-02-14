@@ -1,54 +1,157 @@
 import * as userService from "../../services/users_services.js";
 import { EventEmitter } from "events";
+import { getIdConnectPayload, messageParser } from "./websocket_client_aux.js";
 
+/* Refer to websocket_client_doc.txt for proper documentation */
 export function webSocketClient(wss, io)
 {
-    let espSocket = new EventEmitter();
-    wss.on('connection', async (ws) =>
+    const espSocket = new EventEmitter();
+
+    const deviceSocketsById = new Map(); // Map of DeviceID -> WS Connection ID
+    const wsMeta = new Map(); // Map of WS Connection ID -> DeviceID
+
+    // Handler method to see if referenced device is currently online
+    espSocket.isDeviceOnline = (deviceID) => {
+        if(typeof deviceID !== "string")
+            return false;
+        return deviceSocketsById.has(deviceID.trim());
+    };
+
+    // Method for handling 'messages' dashboard -> device
+    espSocket.sendToDevice = (deviceID, payload) => {
+        if(typeof deviceID !== "string")
+            return false;
+        if(typeof payload === "undefined")
+            return false;
+
+        // get desired ws connection by deviceID
+        const targetDeviceID = deviceID.trim();
+        const targetWs = deviceSocketsById.get(targetDeviceID);
+
+        if(!targetWs || targetWs.readyState !== targetWs.OPEN)
+            return false;
+
+        // format payload
+        const outgoingPayload = typeof payload === "string"
+            ? payload
+            : JSON.stringify(payload);
+
+        targetWs.send(outgoingPayload);
+        return true;
+    };
+
+    // ESP Device Handlers
+    wss.on("connection", async (ws) =>
     {
-        // Ack. New Client Connected on Backend Console
-        console.log('New client connected');
-        try 
-        {  
-            const user = await userService.loginUser({email : "beefnasty@gmail.com", password : "ilikegaypeople"});
-            if(user != null)
+        ws.on("message", async (message) => {
+            const rawMessage = message.toString();
+            let parsedPayload;
+
+            try
             {
-                //console.log(user);
-                ws.send("gaygaygayg");
-                ws.send(user.email);
+                parsedPayload = JSON.parse(rawMessage);
             }
-        } 
-        catch (error) 
-        {
-            console.log(error);
-        }
+            catch
+            {
+                parsedPayload = rawMessage;
+            }
 
-        // Send a welcome message to the client
-        ws.send('Welcome to the WebSocket server!');
+            const parsedMessage = messageParser(parsedPayload);
+            const idConnectPayload = getIdConnectPayload(parsedMessage);
 
-        // ESP Client -> Dashboard
-        ws.on('message', (message) => {
-            console.log(`Received: ${message}`);
-            io.emit("update", `Test ${message}`);
+            // Message Handler (might be refactored)
+            if(idConnectPayload)
+            {
+                // Try to register new device to account
+                try
+                {
+                    const registerResult = await userService.registerDeviceToAccount(idConnectPayload);
+
+                    // General register fail handler -> Send to client device
+                    if(!registerResult.success)
+                    {
+                        ws.send(JSON.stringify({
+                            type: "ID_CONNECT_RESULT",
+                            success: false,
+                            error: registerResult.error
+                        }));
+                        return;
+                    }
+
+                    const userID = String(registerResult.userID);
+                    const deviceID = registerResult.deviceID;
+
+                    deviceSocketsById.set(deviceID, ws); // Map deviceID -> ws Connection
+                    wsMeta.set(ws, {userID, deviceID}); // Map ws Connection -> userID/deviceID
+
+                    // Send to current client account connection results
+                    ws.send(JSON.stringify({
+                        type: "ID_CONNECT_RESULT",
+                        success: true,
+                        alreadyLinked: registerResult.alreadyLinked,
+                        deviceID,
+                        userID
+                    }));
+
+                    // Send to dashboard w/ current user that device is online
+                    io.to(`user:${userID}`).emit("device_status", {
+                        deviceID,
+                        online: true
+                    });
+                    return;
+                }
+                catch (error)
+                {
+                    ws.send(JSON.stringify({
+                        type: "ID_CONNECT_RESULT",
+                        success: false,
+                        error: "SERVER_ERROR"
+                    }));
+                    console.log("ID Connect Error:", error);
+                    return;
+                }
+            }
+
+            // Get associated metadata associated with current ws client connection
+            const meta = wsMeta.get(ws);
+            if(meta)
+            {
+                // Send message to dashboard
+                io.to(`user:${meta.userID}`).emit("device_message", {
+                    deviceID: meta.deviceID,
+                    payload: rawMessage,
+                    parsed: parsedMessage,
+                    timestamp: Date.now()
+                });
+                return;
+            }
+
+            // Unidentified messages remain visible for debugging.
+            io.emit("update", rawMessage);
         });
 
-        // Dashboard -> ESP Client
-        espSocket.sendTo = (payload) =>
-        {
-            console.log("IM GAY GAY", payload);
-            ws.send(payload);
-        }
+        // Handler for disconnecting a client websocket connection
+        ws.on("close", () => {
+            const meta = wsMeta.get(ws);
+            if(meta)
+            {
+                const mappedWs = deviceSocketsById.get(meta.deviceID);
+                if(mappedWs === ws)
+                {
+                    deviceSocketsById.delete(meta.deviceID);
+                }
 
-        // Close event handler
-        ws.on('close', () => {
+                io.to(`user:${meta.userID}`).emit("device_status", {
+                    deviceID: meta.deviceID,
+                    online: false
+                });
+            }
+
+            wsMeta.delete(ws);
             ws.off();
-            console.log('Client disconnected');
+            console.log("ESP Client disconnected");
         });
-
     });
-
-
 
     return espSocket;
 }
-
