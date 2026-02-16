@@ -9,7 +9,10 @@ export default function HomePage()
     <div style={{background: 'var(--app-bg)'}}>
       <h2>Home Page</h2>
         <h2>{userInfo?.first} {userInfo?.last}</h2>
-        <h3>I am gay</h3>
+        <h3>SMartbreaker Details</h3>
+        //details on the smartbreaker
+        <h4>Set Up Instructions</h4>
+        //info on how to setup the smartbreaker
     </div>
   );
 } 
