@@ -19,7 +19,7 @@ export function NavbarSimple() {
   const [active, setActive] = useState('Dashboard');
 
   const links = data.map((item) => (
-    
+    <a
       className={classes.link}
       data-active={item.label === active || undefined}
       href={item.link}
