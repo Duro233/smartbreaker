@@ -10,7 +10,7 @@ export default function HomePage()
   return (
     <div style={{ display: 'flex', height: '100vh', background: 'var(--app-bg)' }}>
       <NavbarSimple />
-      <main style={{ flex: 1, padding: '2rem'}}>
+      <main style={{ flex: 1, padding: '2rem', marginLeft: '300px' }}>
         <h2>{userInfo?.first} {userInfo?.last}</h2>
         <h3>Smartbreaker Details</h3>
         {/*details on the smartbreaker*/}
