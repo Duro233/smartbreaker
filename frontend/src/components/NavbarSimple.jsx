@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import {
+  IconHome,
   IconLayoutDashboard,
   IconMail,
   IconSettings,
@@ -10,6 +11,7 @@ import { Code, Group, Text } from '@mantine/core';
 import classes from './NavbarSimple.module.css';
 
 const data = [
+  { link: '/', label: 'Home', icon: IconHome },
   { link: '/dashboard', label: 'Dashboard', icon: IconLayoutDashboard },
   { link: '/contact', label: 'Contact', icon: IconMail },
   { link: '/settings', label: 'Settings', icon: IconSettings },
