@@ -44,7 +44,6 @@ export function NavbarSimple() {
           <Text fw={900} size="xl" style={{ letterSpacing: '0.1em' }}>
             S.A.B.R.E.
           </Text>
-          <Code fw={700}>v1.0.0</Code>
         </Group>
         {links}
       </div>
