@@ -4,7 +4,10 @@ import '@mantine/core/styles.css'
 
 import Login from './pages/LoginPage';
 import Register from './pages/RegisterPage';
-import Home from './pages/HomePage'
+import Home from './pages/HomePage';
+import DashboardPage from './pages/DashboardPage';
+import SettingPage from './pages/SettingsPage';
+import { NavbarSimple} from './components/NavbarSimple';
 
 // Defines global styles for use in Mantine components
 const theme = createTheme({
@@ -21,9 +24,24 @@ export default function App() {
       <BrowserRouter>
 
         <Routes>
+          {/*routes without navbar*/}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path='/home' element={<Home />} />
+
+          {/*routes with navbar*/}
+          <Route path="/*" element={
+            <div style={{ display: 'flex' }}>
+              <NavbarSimple />
+              <main style={{ flex: 1, marginLeft: '300px', padding: '2rem' }}>
+                <Routes>
+                  <Route path='/home' element={<Home />} />
+                  <Route path='/dashboard' element={<DashboardPage />} />
+                  <Route path='/settings' element={<SettingsPage />} />
+                </Routes>
+              </main>
+            </div>
+          } />
+          
           <Route path="*" element={<Login />} />
         </Routes>
       </BrowserRouter>
