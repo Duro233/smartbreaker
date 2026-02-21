@@ -6,6 +6,7 @@ import Login from './pages/LoginPage';
 import Register from './pages/RegisterPage';
 import Home from './pages/HomePage';
 import DashboardPage from './pages/DashboardPage';
+import ContactPage from './pages/ContactPage';
 import SettingPage from './pages/SettingsPage';
 import { NavbarSimple} from './components/NavbarSimple';
 
@@ -36,6 +37,7 @@ export default function App() {
                 <Routes>
                   <Route path='/home' element={<Home />} />
                   <Route path='/dashboard' element={<DashboardPage />} />
+                  <Route path='/contact' element={<ContactPage />} />
                   <Route path='/settings' element={<SettingsPage />} />
                 </Routes>
               </main>
