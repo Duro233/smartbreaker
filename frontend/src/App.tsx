@@ -45,6 +45,7 @@ export default function App() {
           } />
           
           <Route path="*" element={<Login />} />
+          <Route path="/*" element={<AppLayout />} />
         </Routes>
       </BrowserRouter>
     </MantineProvider>
