@@ -21,21 +21,21 @@ export function NavbarSimple() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const links = data.map((item) => (
-    
-      className={classes.link}
-      data-active={location.pathname === item.link || undefined}
-      href={item.link}
-      key={item.label}
-      onClick={(event) => {
-        event.preventDefault();
-        navigate(item.link);
-      }}
-    >
-      <item.icon className={classes.linkIcon} stroke={1.5} />
-      <span>{item.label}</span>
-    </a>
-  ));
+const links = data.map((item) => (
+  <a
+    className={classes.link}
+    data-active={location.pathname === item.link || undefined}
+    href={item.link}
+    key={item.label}
+    onClick={(event) => {
+      event.preventDefault();
+      navigate(item.link);
+    }}
+  >
+    <item.icon className={classes.linkIcon} stroke={1.5} />
+    <span>{item.label}</span>
+  </a>
+));
 
   return (
     <nav className={classes.navbar}>
