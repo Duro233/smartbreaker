@@ -4,11 +4,13 @@ import { io } from "socket.io-client";
 const socket = io("http://localhost:5000");
 
 export type DevicePayloadMap = Record<string, string>;
+export type DeviceStatusMap = Record<string, boolean>;
 
 export function useDashboardSocket(token: string | null)
 {
     const [authState, setAuthState] = useState("Pending");
     const [devicePayloadsById, setDevicePayloadsById] = useState<DevicePayloadMap>({});
+    const [deviceStatus, setDeviceStatus] = useState<DeviceStatusMap>({});
 
     useEffect(() => {
         if(!token)
@@ -27,7 +29,6 @@ export function useDashboardSocket(token: string | null)
                 setAuthState(`Authenticated as ${result.userID}`);
                 return;
             }
-
             setAuthState(`Auth failed: ${result?.error ?? "Unknown error"}`);
         };
 
@@ -42,27 +43,34 @@ export function useDashboardSocket(token: string | null)
                 ...prev,
                 [incomingDeviceID]: incomingPayload
             }));
+
+            handleDeviceStatus(arg);
         };
 
+
         const handleDeviceStatus = (arg: any) => {
-            console.log("device_status", arg);
+            setDeviceStatus((prev) => ({
+                ...prev, 
+                [arg.deviceID] : Boolean(arg?.online)
+            }));
+            
         };
 
         const handleDeviceCommandResult = (arg: any) => {
             console.log("device_command_result", arg);
         };
 
+        // Event handlers based on the 'command' is called from the backend
         socket.on("connect", authenticateDashboard);
         socket.on("dashboard_auth_result", handleAuthResult);
         socket.on("device_message", handleDeviceMessage);
         socket.on("device_status", handleDeviceStatus);
         socket.on("device_command_result", handleDeviceCommandResult);
 
-        if(socket.connected)
-        {
-            authenticateDashboard();
-        }
+        //if(socket.connected)
+         ////   authenticateDashboard();
 
+        // Perform cleanup function on DOM unmount to prevent memory leakes related to useEffect
         return () => {
             socket.off("connect", authenticateDashboard);
             socket.off("dashboard_auth_result", handleAuthResult);
@@ -72,20 +80,23 @@ export function useDashboardSocket(token: string | null)
         };
     }, [token]);
 
-    const sendDeviceCommand = (deviceID: string, payload: string) => {
-        if(!deviceID.trim())
-        {
-            return;
-        }
 
+    // Function for handling sending messages from dashboard -> backend
+    const sendDeviceCommand = (deviceID: string, payload: string, token : string) => {
+        if(!deviceID.trim())
+            return;
+
+        console.log(payload);
         socket.emit("device_command", {
             deviceID,
-            payload
+            payload,
+            token
         });
     };
 
     return {
         authState,
+        deviceStatus,
         devicePayloadsById,
         sendDeviceCommand
     };

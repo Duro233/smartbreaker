@@ -120,6 +120,7 @@ export function webSocketClient(wss, io)
                 io.to(`user:${meta.userID}`).emit("device_message", {
                     deviceID: meta.deviceID,
                     payload: rawMessage,
+                    online: true,
                     parsed: parsedMessage,
                     timestamp: Date.now()
                 });

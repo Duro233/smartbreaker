@@ -13,8 +13,6 @@ export async function createUser({firstName, lastName, email, password})
     });
 }
 
-
-
 // Function for user login
 export async function loginUser({email, password})
 {
@@ -106,7 +104,7 @@ export async function registerDeviceToAccount({email, password, deviceID})
 }
 
 
-// Function to verify a user owns a device by ID
+// Function to verify a user owns a device by ID through DB check
 export async function userOwnsDevice({userID, deviceID})
 {
     if((typeof userID !== "string" && typeof userID !== "number") || typeof deviceID !== "string")

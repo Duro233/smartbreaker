@@ -2,25 +2,18 @@ import * as userService from "../../services/users_services.js";
 
 export function webSocketDashboard(io, espSocket)
 {
-    // Initial event handler for dashboard connecton
     io.on("connection", (socket) => {
 
         // Log dashboard connection
         console.log("Dashboard Client connected:", socket.id);
 
+        // Event handler for initial user dashboard connection
         socket.on("dashboard_auth", async (TOKEN) => {
             try
             {
                 const token = TOKEN.token;
-                if(typeof token !== "string" || token.length === 0)
-                {
-                    socket.emit("dashboard_auth_result", {
-                        success: false,
-                        error: "MISSING_TOKEN"
-                    });
-                    return;
-                }
 
+                // Validate user through jwt
                 const user = await userService.getUser(token);
                 if(!user)
                 {
@@ -31,10 +24,12 @@ export function webSocketDashboard(io, espSocket)
                     return;
                 }
 
+                // Create a defined 'room' for user according to their userID
                 const userID = String(user.userID);
                 socket.data.userID = userID;
                 socket.join(`user:${userID}`);
 
+                // Validate that user lookup was successful, and return all devices to dashboard
                 socket.emit("dashboard_auth_result", {
                     success: true,
                     userID,
@@ -51,22 +46,17 @@ export function webSocketDashboard(io, espSocket)
             }
         });
 
+        // Event Handler for parsing incoming commands sent from the dashboard
         socket.on("device_command", async (msg) => {
             try
             {
-                const userID = socket.data.userID;
-                if(!userID)
-                {
-                    socket.emit("device_command_result", {
-                        success: false,
-                        error: "NOT_AUTHENTICATED"
-                    });
-                    return;
-                }
-
                 const deviceID = typeof msg?.deviceID === "string" ? msg.deviceID.trim() : "";
                 const payload = msg?.payload;
+                const token = msg?.token;
+                const user = await userService.getUser(token);
+                const userID = user.userID;
 
+                // Validate that specified deviceID is present
                 if(deviceID.length === 0)
                 {
                     socket.emit("device_command_result", {
@@ -76,6 +66,7 @@ export function webSocketDashboard(io, espSocket)
                     return;
                 }
 
+                // Check to see that the current deviceID is operated by the current user
                 const ownsDevice = await userService.userOwnsDevice({userID, deviceID});
                 if(!ownsDevice)
                 {
@@ -87,6 +78,7 @@ export function webSocketDashboard(io, espSocket)
                     return;
                 }
 
+                // Verify that the current device is online
                 if(!espSocket.isDeviceOnline(deviceID))
                 {
                     socket.emit("device_command_result", {
@@ -97,6 +89,7 @@ export function webSocketDashboard(io, espSocket)
                     return;
                 }
 
+                // Send command to the device
                 const wasSent = espSocket.sendToDevice(deviceID, payload);
                 socket.emit("device_command_result", {
                     success: wasSent,

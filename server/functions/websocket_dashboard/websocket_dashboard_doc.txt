@@ -1,0 +1,14 @@
+====This file contains documentation in regards to websocket_dashboard.js====
+
+Initial Event Handler:
+    - Handles the initial dashboard connection and associated connection protocols to ensure a device is routed properly between dashboard and client.
+    - Validates the stored token and attempts to get the associated user information. If token is invalid, the connecton doesn't continue forward. This might be redundant as upon refresh w/ an invalid or expired token the user should be redirected to the login page.
+    - Create a specific room based on the userID. This allows for 'messages' to essentially only be passed between the respective dashboard and client.
+    - Finally, we 'emit' to the dashboard that authentication was a success, and return respective information to the dashboard.
+
+
+Message Parser Event Handler:
+    - Whenever the dashboard 'emits' a 'device_command' this event handler is executed and runs some checks before passing the data over the clinet websocket connection.
+    - Verify that the deviceID is present / valid, and verify that this current user owns the device
+    - Make a check that the current device is actively online.
+    - If all of these checks are successful, then send the dashboard message to the respective client.
