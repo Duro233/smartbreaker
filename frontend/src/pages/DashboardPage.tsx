@@ -25,9 +25,7 @@ export default function DashboardPage()
 
   return (
     <div style={{background: 'var(--app-bg)'}}>
-      <h2>Home Page</h2>
-      <h2>{userInfo?.first} {userInfo?.last}</h2>
-      <h4>{authState}</h4>
+    <h2> Welcome Back, {userInfo?.first}!</h2>
       <DeviceList
         registeredDeviceIDs={deviceIDs}
         payloadsByDeviceID={devicePayloadsById}

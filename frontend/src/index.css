@@ -191,6 +191,59 @@
 
 
 
+/*Dashboard Styling*/
+.dashboard-container
+{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border: solid 1px var(--app-accent);
+  border-radius: 10px;
+  margin: 8px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.dashboard-container-offline
+{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border: solid 1px gray;
+  border-radius: 10px;
+  margin: 8px;
+  opacity: 60%;
+  pointer-events: none;
+}
+
+.dashboard-container:hover
+{
+  transform: scale(1.03);
+  box-shadow: 0 1px 20px 0px color-mix(in srgb, var(--app-accent-alt-lighter) 30%, transparent); /* have to do this with glow to actually use variable css styles */
+  border: 2px;
+  border-style: solid;
+  border-color: var(--app-accent-alt-darker);
+}
+
+.dashboard-container-action-icon-area
+{
+  display: flex;
+  width: 100%;
+  height: 0%;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.dashboard-container-temperature-area
+{
+  width: 50%;
+  margin: 3%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+
 
 
 
