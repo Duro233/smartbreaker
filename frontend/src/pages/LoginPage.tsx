@@ -4,7 +4,7 @@ import { loginUser } from '../routes/auth';
 import { Button, Stack, TextInput, PasswordInput} from '@mantine/core';
 import { useForm } from '@mantine/form';
 
-import Navigation from '../components/navigation';
+import Navigation from '../components/home-comp/navigation/login-navigation';
 import Background from '../components/background/Background';
 
 //import classes from '../../src/index.css';
@@ -37,7 +37,7 @@ export default function Login() {
       if(res.status === 200)
       {
         console.log("Login Success");
-        window.location.href = '/home';
+        window.location.href = '/dashboard';
       }
     } catch (err: any) {
       alert(err.response?.data?.message || 'Login failed');

@@ -3,7 +3,7 @@ import { registerUser } from '../routes/auth';
 import { Button, Stack, TextInput, PasswordInput} from '@mantine/core';
 import { useForm } from '@mantine/form';
 
-import Navigation from '../components/navigation';
+import Navigation from '../components/home-comp/navigation/login-navigation';
 import Background from '../components/background/Background';
 
 export default function Register() {
