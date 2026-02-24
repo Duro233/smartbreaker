@@ -40,6 +40,7 @@ export default function getUser()
         })
     }, [])
 
+    console.log(me);
     return me;
 }
 

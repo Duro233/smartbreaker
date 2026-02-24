@@ -3,6 +3,7 @@ import axios from 'axios';
 
 // Build URL path based on whether in prod or dev
 //onst url = buildPath();
+//const url = buildPath();
 
 export const API = axios.create({
   //baseURL: 'http://thesmartbuilder.xyz/api',
