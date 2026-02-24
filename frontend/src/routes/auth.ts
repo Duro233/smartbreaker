@@ -8,7 +8,7 @@ import axios from 'axios';
 export const API = axios.create({
   //baseURL: 'http://thesmartbuilder.xyz/api',
   //baseURL: url + '/api', 
-  baseURL: 'http://localhost:5000/api',
+  baseURL: 'http://thesmartbuilder.xyz/api',
   headers: {
     'Content-Type': 'application/json'
   }
