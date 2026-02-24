@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:5000");
+//const socket = io("http://localhost:5000");
+const socket = io("http://thesmartbuilder.xyz");
+
 
 export type DevicePayloadMap = Record<string, string>;
 export type DeviceStatusMap = Record<string, boolean>;
