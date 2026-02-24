@@ -45,7 +45,7 @@ export default function App() {
           } />
           
           <Route path="*" element={<Login />} />
-          {//<Route path="/*" element={<AppLayout />} /> idk what this is but it is getting temp removed because it is causing issues}
+          {/*<Route path="/*" element={<AppLayout />} /> idk what this is but it is getting temp removed because it is causing issues*/}
         </Routes>
       </BrowserRouter>
     </MantineProvider>
