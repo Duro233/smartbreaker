@@ -1,0 +1,21 @@
+====This file contains documentation in regards to websocket connection protocols on the dashboard page====
+
+General Outline: 
+    - This contains documentation in regards to 'useDashboardSockets', 'DevicePayloadList.tsx', and 'DeviceCommandForm.tsx'
+
+useDashBoardSocket.ts:
+    - This file initializes and stores a map of all client connections (deviceID) relating to the current user.
+    - initializes and stores a map of all client (deviceIDs) and sets a bool flag for checking whether they are online or not
+    - Is responible for handling/parsing incoming payloads and routing to a specific incoming messages within the 'chatroom' and crediting them to a specific device
+    - Makes constant checks for online status per deviceID.
+    - Contains function for handling outgoing messages from the dashboard -> respective client.
+    - Exports 'authentication_state', 'device_status_map', 'payload_by_id_map', and the function for handling sending outgoing messages.
+
+
+DeviceList.tsx
+    - This file is responsible for taking in the respective maps created in the previous file, and actually displaying them to the DOM.
+    - Dynamically maps deviceID to multiple HTML elements to appropriately display each new connection correctly on the dashboard.
+
+
+DeviceCommandForm.tsx
+    - For now, this files serves as a generic form to handle sending specific commands from a user dashboard to choosen respective client.

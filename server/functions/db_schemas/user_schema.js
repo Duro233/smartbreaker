@@ -44,7 +44,8 @@ const userSchema = new mongoose.Schema(
 
     devices:
     {
-        ofString: [String]
+        type: [String],
+        default: []
     }
     }
 );

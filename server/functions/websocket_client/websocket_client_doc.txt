@@ -1,0 +1,40 @@
+====This file contains documentation in regards to websocket_client.js====
+
+/* Imports associated with setting up full-duplex communication 
+through websockets.
+Server (socket.io) is what is used for Frontend(dashboard) -> Node Communication
+WebSocket (ws) is what is used for ESP32 -> Node Communication*/
+
+Top-Level Arguments:
+    - 'wss' refers to the device side WebSocket server (esp32)
+    - 'io' refers to the frontend WebSocket server
+
+EventEmitter:
+    - Node WS and WS.io handle everything through EventEmitter objects. These objects exposes methods for handling specific events on the backend.
+    - In particular (for most of our use cases), offers the 'on' and 'emit' methods
+    - 'emit' is used to trigger an event (can think of it as a function call in a sense)
+    - 'on' is used as a callback function that is executed when the event is triggered (called if you want to think of it as function)
+
+    - EX: eventEmitter.emit('start');
+          eventEmitter.on('start', () => {
+            console.log('started');
+          }); 
+
+          Whenever eventEmitter.emit('start') is called, the eventEmitter associated with it is 'called'
+          and executes whatever is inside of it. In this case, we log 'started' to the console whenever '.emit('start')' is executed.
+
+    - Multiple arguments can be passed to the event handler and it's associated callback function
+    - Other methods exist for it that can be found online, but for our purposes, 'on' and 'emit' satisfy our needs.
+
+Maps:
+    - deviceSocketsById refers to the map of deviceID (derived from onboard MAC address) -> ws connection id
+    - wsMeta refers to the map of the ws connection ID -> deviceID
+        - Two maps are implemented to ensure linear lookup times 
+        - Incoming messages on their own only produce the specific ws connection id. With the additional map, it becomes trivial to derive deviceID/userID for linear routing to specific user.
+
+
+io.to:
+    - Important EE method for specifying which dashboard connection to route current information to
+    - can be combined w/ above previously mentioned EE methods (emit and on) 
+
+    

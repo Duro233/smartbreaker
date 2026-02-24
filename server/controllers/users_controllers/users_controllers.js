@@ -41,9 +41,11 @@ export const loginUser = async(req, res, next) =>
     try 
     {
         const user = await usersService.loginUser(req.body);
-        const token = generateAccessToken(user.userID, user.passwordHash, user.email);
         if(user != null)
+        {
+            const token = generateAccessToken(user.userID, user.passwordHash, user.email);
             return res.status(200).json({email : user.email, token : token});
+        }
         else
             return res.status(404).json({message : "Invalid Credentials"});
     }
@@ -60,11 +62,14 @@ export const getUser = async(req, res, next) =>
     {
         const token = req.headers.authorization?.startsWith("Bearer ")
         ? req.headers.authorization.slice(7) : null;
+        if(!token)
+            return res.status(401).json({message : "Missing Authorization Token"});
+
         const user = await usersService.getUser(token);
         if(user != null)
             return res.status(200).json({email : user.email, userID : user.userID, first : user.firstName, last : user.lastName, regDevices : user.devices});
         else
-            return res.status(404).json({message : "Authentication Failed"});
+            return res.status(401).json({message : "Authentication Failed"});
     }
     catch(error)
     {
