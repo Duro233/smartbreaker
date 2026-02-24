@@ -7,7 +7,7 @@ import Register from './pages/RegisterPage';
 import Home from './pages/HomePage';
 import DashboardPage from './pages/DashboardPage';
 import ContactPage from './pages/ContactPage';
-import SettingPage from './pages/SettingsPage';
+import SettingsPage from './pages/SettingsPage';
 import { NavbarSimple} from './components/NavbarSimple';
 
 // Defines global styles for use in Mantine components
