@@ -90,7 +90,9 @@ export function webSocketDashboard(io, espSocket)
                 }
 
                 // Send command to the device
-                const wasSent = espSocket.sendToDevice(deviceID, payload);
+                const wasSent = espSocket.sendToDevice(deviceID, JSON.stringify({
+                    type : "COMMAND",
+                    payload : payload}));
                 socket.emit("device_command_result", {
                     success: wasSent,
                     deviceID,

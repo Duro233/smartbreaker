@@ -40,7 +40,7 @@ export default function getUser()
         })
     }, [])
 
-    console.log(me);
+    //console.log(me); you need to come back and fix me from being broken and constantly reloading :///
     return me;
 }
 

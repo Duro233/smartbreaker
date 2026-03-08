@@ -10,20 +10,22 @@ type DevicePayloadListProps = {
 
 type ParsedPayload = {
     parts: string[];
-    part1: string;
-    part2: string;
-    part3: string;
+    current_val: string;
+    temp_val: string;
+    current_max: string;
+    temp_max: string;
 };
 
 function splitPayload(payload: string | undefined, delimiter = "|"): ParsedPayload {
     const parts = payload ? payload.split(delimiter).map((part) => part.trim()) : [];
-    const [part1 = "", part2 = "", part3 = ""] = parts;
+    const [current_val = "", temp_val = "", current_max = "", temp_max = ""] = parts;
 
     return {
         parts,
-        part1,
-        part2,
-        part3,
+        current_val,
+        temp_val,
+        current_max,
+        temp_max
     };
 }
 
@@ -36,14 +38,19 @@ export default function DeviceList({registeredDeviceIDs, payloadsByDeviceID, sta
 
     if(registeredDeviceIDs.length === 0)
         return <h4>No devices registered.</h4>;
-    
+ 
     return (
         <>
             <Grid grow gutter="lg"> 
                 {registeredDeviceIDs.map((deviceID) => {
                     const payload = payloadsByDeviceID[deviceID];
-                    const { part1, part2, part3 } = splitPayload(payload);
-
+                    console.log(payload); // log payload in console so I can see it :///////
+                    const { current_val, temp_val, current_max, temp_max} = splitPayload(payload);
+                    const current_percentage = (parseFloat(current_val.split("=")[1]) / (parseFloat(current_max.split("=")[1])) * 100);
+                    const temperature_percentage = (parseFloat(temp_val.split('=')[1]) / (parseFloat(temp_max.split("=")[1])) * 100);
+                    //console.log(current_percentage);
+                    //console.log(temperature_percentage);
+                
                     return (
                 <Grid.Col key={deviceID} span={3} className= {statusByDeviceID[deviceID] ? "dashboard-container" : "dashboard-container-offline"}>
                     
@@ -57,29 +64,32 @@ export default function DeviceList({registeredDeviceIDs, payloadsByDeviceID, sta
                         <h4 style={{margin: '0px'}}>{deviceID}</h4>
                         <h5 style={{margin: '0px'}}>{statusByDeviceID[deviceID] ? "Online | Active" : "Offline"}</h5>
                     </div>
+                    {/* Ring Styling */}
                     <Center style={{ height: ringSize, width: '100%' }}>
                     <Box style={{ position: 'relative', width: ringSize, height: ringSize + 90 }}>
                         <RingProgress
                         size={ringSize}
                         thickness={8}
+                        transitionDuration={100}
                         roundCaps
                         sections={[
-                            {value: statusByDeviceID[deviceID] ? 10 : 0, color: 'green' /*temp setup*/}
+                            {value: statusByDeviceID[deviceID] ? parseInt(current_percentage) : 0, color: 'green' /*temp setup*/}
                         ]}
                     />
+                        {/* Ring Percentage Text*/}
                         <Center style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
                             <Text size='xl' ta="center" lh={1}>
-                                {statusByDeviceID[deviceID] ? "10 %" : "0 %" /*temp setup*/}
+                                {statusByDeviceID[deviceID] ? parseInt(current_percentage) + "%": "0 %" /*temp setup*/}
                             </Text>
                         </Center>
                     </Box>
                     </Center>
                     {/*payload ?? "No payload yet"*/}
-                    <Text size="xs">{payload ? (part1+' A') : "Current = 0.0 A"}</Text>
-
+                    {<Text size="xs">{payload ? (current_val+' A') : "Current = 0.0 A"}</Text>}
+                    <Text size="xs">{payload ? (current_max + ' A') : "Max Current = 0.0 A"}</Text>
                     <div className="dashboard-container-temperature-area">
                         <Progress radius='xs' size='md' value={statusByDeviceID[deviceID] ? 32 : 0} style={{width: '100%'}} striped animated color="green"/>
-                        <Text size="xs">{payload ? ("Temperature = 32" +'° C') : "Temperature = 0.0° C"}</Text>
+                        <Text size="xs">{payload ? (temp_val+'° C') : "Temperature = 0.0° C"}</Text>
                     </div>
                     <Button variant="primary" onClick={() => sendDeviceCommand(deviceID, 'TOGGLE', token? token : '')}>DISABLE</Button>
                 </Grid.Col>
