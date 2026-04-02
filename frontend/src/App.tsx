@@ -7,6 +7,7 @@ import Register from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import ContactPage from './pages/ContactPage';
 import SettingsPage from './pages/SettingsPage';
+import AboutPage from './pages/AboutPage';
 import PostLoginNavigation from './components/home-comp/navigation/post-login-navigation';
 
 // Defines global styles for use in Mantine components
@@ -35,6 +36,7 @@ export default function App() {
                 <Route path='/dashboard' element={<DashboardPage />} />
                 <Route path='/contact' element={<ContactPage />} />
                 <Route path='/settings' element={<SettingsPage />} />
+                <Route path='/about' element={<AboutPage />} />
               </Routes>
             </PostLoginNavigation>
           } />
