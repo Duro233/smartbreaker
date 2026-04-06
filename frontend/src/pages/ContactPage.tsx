@@ -2,7 +2,7 @@ import { useState } from "react";
 
 interface FormData {
   firstName: string;
-  lastNmae: string;
+  lastName: string;
   email: string;
   message: string;
 }
@@ -19,9 +19,9 @@ export default function ContactPage() {
     lastName: "",
     email: "",
     message: "",
-  };
+  });
 
-  const [errors, setErrors] = useState<formErrors>({});
+  const [errors, setErrors] = useState<FormErrors>({});
   const [submitted, setSubmitted] = useState(false);
 
   const validate = (): boolean => {
