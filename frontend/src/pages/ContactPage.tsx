@@ -67,14 +67,14 @@ export default function ContactPage() {
   };
 
   return (
-    <div style={{ maxWidth: "560px", margin: "0 auto", padding: "2rem 1.5rem" }}>
+    <div style={{ width: "100%", padding: "2rem 1.5rem", boxSizing: "border-box" }}>
       <h2 style={{ margin: "0 0 0.25rem" }}>Contact us</h2>
       <p style={{ fontSize: "14px", color: "#777", marginBottom: "2rem" }}>
         Fill out the form below and we'll get back to you shortly.
       </p>
 
       {/* First + Last name row */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "16px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "12px", marginBottom: "16px" }}>
         <div style={fieldStyle}>
           <label style={labelStyle}>First name</label>
           <input
