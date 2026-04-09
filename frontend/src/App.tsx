@@ -4,6 +4,7 @@ import '@mantine/core/styles.css'
 
 import Login from './pages/LoginPage';
 import Register from './pages/RegisterPage';
+import HomePage from './pages/HomePage';
 import DashboardPage from './pages/DashboardPage';
 import ContactPage from './pages/ContactPage';
 import SettingsPage from './pages/SettingsPage';
@@ -33,6 +34,7 @@ export default function App() {
           <Route path="/*" element={
             <PostLoginNavigation>
               <Routes>
+                <Route path='/home' element={<HomePage />} />
                 <Route path='/dashboard' element={<DashboardPage />} />
                 <Route path='/contact' element={<ContactPage />} />
                 <Route path='/settings' element={<SettingsPage />} />
