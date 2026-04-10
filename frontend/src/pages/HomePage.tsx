@@ -25,7 +25,7 @@ export default function HomePage() {
           </h1>
           <p style={{ fontSize: "14px", color: "#555", lineHeight: 1.8, margin: 0 }}>
             S.A.B.R.E. combines a smart circuit breaker device with a real-time web dashboard.
-            Monitor power consumption, trip breakers remotely, and get instant alerts — all from your browser.
+            Users can monitor power consumption, trip breakers remotely, and get instant alerts all from your browser.
           </p>
         </div>
         <img
