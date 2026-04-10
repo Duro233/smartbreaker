@@ -14,18 +14,20 @@ type ParsedPayload = {
     temp_val: string;
     current_max: string;
     temp_max: string;
+    active: string;
 };
 
 function splitPayload(payload: string | undefined, delimiter = "|"): ParsedPayload {
     const parts = payload ? payload.split(delimiter).map((part) => part.trim()) : [];
-    const [current_val = "", temp_val = "", current_max = "", temp_max = ""] = parts;
+    const [current_val = "", temp_val = "", current_max = "", temp_max = "", active = ""] = parts;
 
     return {
         parts,
         current_val,
         temp_val,
         current_max,
-        temp_max
+        temp_max,
+        active
     };
 }
 
@@ -45,7 +47,7 @@ export default function DeviceList({registeredDeviceIDs, payloadsByDeviceID, sta
                 {registeredDeviceIDs.map((deviceID) => {
                     const payload = payloadsByDeviceID[deviceID];
                     console.log(payload); // log payload in console so I can see it :///////
-                    const { current_val, temp_val, current_max, temp_max} = splitPayload(payload);
+                    const { current_val, temp_val, current_max, temp_max, active} = splitPayload(payload);
                     const current_percentage = (parseFloat(current_val.split("=")[1]) / (parseFloat(current_max.split("=")[1])) * 100);
                     const temperature_percentage = (parseFloat(temp_val.split('=')[1]) / (parseFloat(temp_max.split("=")[1])) * 100);
                     //console.log(current_percentage);
@@ -66,7 +68,7 @@ export default function DeviceList({registeredDeviceIDs, payloadsByDeviceID, sta
                     </div>
                     {/* Ring Styling */}
                     <Center style={{ height: ringSize, width: '100%' }}>
-                    <Box style={{ position: 'relative', width: ringSize, height: ringSize + 90 }}>
+                    <Box style={{ position: 'relative', width: ringSize, height: ringSize}}>
                         <RingProgress
                         size={ringSize}
                         thickness={8}
@@ -91,7 +93,7 @@ export default function DeviceList({registeredDeviceIDs, payloadsByDeviceID, sta
                         <Progress radius='xs' size='md' value={statusByDeviceID[deviceID] ? 32 : 0} style={{width: '100%'}} striped animated color="green"/>
                         <Text size="xs">{payload ? (temp_val+'° C') : "Temperature = 0.0° C"}</Text>
                     </div>
-                    <Button variant="primary" onClick={() => sendDeviceCommand(deviceID, 'TOGGLE', token? token : '')}>DISABLE</Button>
+                    <Button variant="primary" onClick={() => sendDeviceCommand(deviceID, 'TOGGLE', token? token : '')}>{parseInt(active.split("=")[1]) == 0 ? "ENABLE" : "DISABLE"}</Button>
                 </Grid.Col>
             )})}
             </Grid>
