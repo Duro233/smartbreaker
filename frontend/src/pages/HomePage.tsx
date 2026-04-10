@@ -1,7 +1,15 @@
 import devicePhoto from "../images/sabre-device.jpg";
+import breakerPhoto from "../images/breaker.webp";
+import Navigation from "../components/home-comp/navigation/login-navigation";
+import Background from '../components/background/Background';
+
 
 export default function HomePage() {
   return (
+    <div>
+    <div>
+        <Navigation />
+    </div>
     <div style={{ width: "100%", boxSizing: "border-box" as const, fontFamily: "sans-serif" }}>
 
       <section style={{
@@ -29,9 +37,9 @@ export default function HomePage() {
           </p>
         </div>
         <img
-          src={devicePhoto}
+          src={breakerPhoto}
           alt="S.A.B.R.E. device"
-          style={{ width: "100%", borderRadius: "12px", border: "1px solid #e5e5e5", objectFit: "cover" }}
+          style={{ width: "80%", objectFit: "cover" }}
         />
       </section>
 
@@ -77,6 +85,8 @@ export default function HomePage() {
         ))}
       </section>
 
+        <Background /> {/*come back and adjust the background on dis screen */}
+    </div>
     </div>
   );
 }

@@ -1,11 +1,12 @@
 import { useDashboardSocket } from "./useDashboardSocket";
-import { Box, Center, RingProgress, Grid, Text, ActionIcon, Progress, Button} from "@mantine/core";
-import { IconTrash } from "@tabler/icons-react";
+import { Box, Center, RingProgress, Grid, Text, ActionIcon, Progress, Button, Loader} from "@mantine/core";
+import { IconTrash, IconLogs} from "@tabler/icons-react";
 
 type DevicePayloadListProps = {
     registeredDeviceIDs: string[];
     payloadsByDeviceID: Record<string, string>;
     statusByDeviceID: Record<string, boolean>;
+    name: string[];
 }
 
 type ParsedPayload = {
@@ -32,17 +33,26 @@ function splitPayload(payload: string | undefined, delimiter = "|"): ParsedPaylo
 }
 
 
-export default function DeviceList({registeredDeviceIDs, payloadsByDeviceID, statusByDeviceID} : DevicePayloadListProps)
+const handleLogsPageRedirect = () =>
+{
+    window.location.href='/logs';
+}
+
+export default function DeviceList({registeredDeviceIDs, payloadsByDeviceID, statusByDeviceID, name} : DevicePayloadListProps)
 {
     const token = localStorage.getItem('token');
     const {sendDeviceCommand} = useDashboardSocket(token);
     const ringSize = 200;
 
     if(registeredDeviceIDs.length === 0)
-        return <h4>No devices registered.</h4>;
- 
+        return(
+            <div>
+                <Loader size={100} color="rgba(126, 247, 150, 1)" type="bars" />
+            </div>
+        )
     return (
         <>
+            <h2 style={{ display: 'flex', justifyContent: 'center' }}> Welcome Back {name}!</h2>
             <Grid grow gutter="lg"> 
                 {registeredDeviceIDs.map((deviceID) => {
                     const payload = payloadsByDeviceID[deviceID];
@@ -53,10 +63,14 @@ export default function DeviceList({registeredDeviceIDs, payloadsByDeviceID, sta
                     //console.log(current_percentage);
                     //console.log(temperature_percentage);
                 
-                    return (
+                return (
                 <Grid.Col key={deviceID} span={3} className= {statusByDeviceID[deviceID] ? "dashboard-container" : "dashboard-container-offline"}>
                     
+                    {/* Delete/Log Button Styling */}
                     <div className="dashboard-container-action-icon-area">
+                        <ActionIcon radius={'md'} variant="outline" color='green' style={{marginTop: "5px"}} onClick={() => handleLogsPageRedirect()}>
+                            <IconLogs></IconLogs>
+                        </ActionIcon>
                         <ActionIcon radius={'md'} variant="outline" color='red'>
                             <IconTrash></IconTrash>
                         </ActionIcon>

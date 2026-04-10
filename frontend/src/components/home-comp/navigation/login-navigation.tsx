@@ -22,7 +22,7 @@ export default function Navigation() {
   const { setColorScheme, toggleColorScheme } = useMantineColorScheme();
   const computed = useComputedColorScheme('light', {getInitialValueInEffect : true})
   const links = [
-    'Home', 'Dashboard', 'Settings']; // placeholder for now
+    'Home', 'Login', 'Register']; // placeholder for now
 
   return (
     <AppShell
