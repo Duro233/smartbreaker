@@ -12,6 +12,7 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {
+  IconHome,
   IconLayoutDashboard,
   IconMail,
   IconSettings,
@@ -41,6 +42,7 @@ type PostLoginNavigationProps = {
 };
 
 const defaultLinks: NavItem[] = [
+  { link: '/home', label: 'Home', icon: IconHome },
   { link: '/dashboard', label: 'Dashboard', icon: IconLayoutDashboard },
   { link: '/settings', label: 'Settings', icon: IconSettings },
   { link: '/contact', label: 'Contact', icon: IconMail },
