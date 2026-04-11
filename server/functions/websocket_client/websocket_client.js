@@ -1,6 +1,39 @@
 import * as userService from "../../services/users_services.js";
+import * as dataService from "../../services/data_services.js";
 import { EventEmitter } from "events";
 import { getIdConnectPayload, messageParser } from "./websocket_client_aux.js";
+
+const LOG_FLUSH_INTERVAL_MS = 60 * 1000;
+
+function extractTelemetryValue(payloadText, label)
+{
+    if(typeof payloadText !== "string")
+        return null;
+
+    const escapedLabel = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const match = payloadText.match(new RegExp(`${escapedLabel}\\s*=\\s*(-?\\d+(?:\\.\\d+)?)`, "i"));
+    if(!match)
+        return null;
+
+    const numericValue = Number(match[1]);
+    return Number.isFinite(numericValue) ? numericValue : null;
+}
+
+function getTelemetryFromPayload(rawMessage)
+{
+    const current = extractTelemetryValue(rawMessage, "Current");
+    const temperature = extractTelemetryValue(rawMessage, "Temperature");
+    const activeValue = extractTelemetryValue(rawMessage, "Active?");
+
+    if(current == null || temperature == null)
+        return null;
+
+    return {
+        current,
+        temperature,
+        active: activeValue == null ? false : activeValue !== 0
+    };
+}
 
 /* Refer to websocket_client_doc.txt for proper documentation */
 export function webSocketClient(wss, io)
@@ -9,6 +42,33 @@ export function webSocketClient(wss, io)
 
     const deviceSocketsById = new Map(); // Map of DeviceID -> WS Connection ID
     const wsMeta = new Map(); // Map of WS Connection ID -> DeviceID
+    const latestTelemetryByDeviceId = new Map(); // Map of DeviceID -> latest telemetry snapshot
+
+    const flushLatestTelemetry = async () =>
+    {
+        for(const [deviceID, telemetry] of latestTelemetryByDeviceId.entries())
+        {
+            try
+            {
+                await dataService.logData({
+                    timestamp: telemetry.timestamp,
+                    deviceID,
+                    current: telemetry.current,
+                    temperature: telemetry.temperature,
+                    active: telemetry.active
+                });
+                latestTelemetryByDeviceId.delete(deviceID);
+            }
+            catch(error)
+            {
+                console.log("Telemetry Logging Error:", error);
+            }
+        }
+    };
+
+    setInterval(() => {
+        void flushLatestTelemetry();
+    }, LOG_FLUSH_INTERVAL_MS);
 
     // Handler method to see if referenced device is currently online
     espSocket.isDeviceOnline = (deviceID) => {
@@ -36,9 +96,11 @@ export function webSocketClient(wss, io)
             ? payload
             : JSON.stringify(payload);
 
+
         targetWs.send(outgoingPayload);
         return true;
     };
+
 
     // ESP Device Handlers
     wss.on("connection", async (ws) =>
@@ -116,6 +178,15 @@ export function webSocketClient(wss, io)
             const meta = wsMeta.get(ws);
             if(meta)
             {
+                const telemetry = getTelemetryFromPayload(rawMessage);
+                if(telemetry)
+                {
+                    latestTelemetryByDeviceId.set(meta.deviceID, {
+                        ...telemetry,
+                        timestamp: new Date()
+                    });
+                }
+
                 // Send message to dashboard
                 io.to(`user:${meta.userID}`).emit("device_message", {
                     deviceID: meta.deviceID,

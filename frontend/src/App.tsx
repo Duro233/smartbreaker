@@ -1,6 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import {createTheme, MantineProvider, localStorageColorSchemeManager } from '@mantine/core'
-import '@mantine/core/styles.css'
+import '@mantine/core/styles.css';
+import '@mantine/charts/styles.css';
+import '@mantine/dates/styles.css';
+
+
 
 import Login from './pages/LoginPage';
 import Register from './pages/RegisterPage';

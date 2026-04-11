@@ -1,5 +1,5 @@
 import { useDashboardSocket } from "./useDashboardSocket";
-import { Box, Center, RingProgress, Grid, Text, ActionIcon, Progress, Button, Loader} from "@mantine/core";
+import { Box, Center, RingProgress, Grid, Text, ActionIcon, Progress, Button, Loader, Tooltip} from "@mantine/core";
 import { IconTrash, IconLogs} from "@tabler/icons-react";
 
 type DevicePayloadListProps = {
@@ -42,7 +42,7 @@ export default function DeviceList({registeredDeviceIDs, payloadsByDeviceID, sta
 {
     const token = localStorage.getItem('token');
     const {sendDeviceCommand} = useDashboardSocket(token);
-    const ringSize = 200;
+    const ringSize = 200
 
     if(registeredDeviceIDs.length === 0)
         return(
@@ -68,12 +68,17 @@ export default function DeviceList({registeredDeviceIDs, payloadsByDeviceID, sta
                     
                     {/* Delete/Log Button Styling */}
                     <div className="dashboard-container-action-icon-area">
+                        <Tooltip label="View Logs">
                         <ActionIcon radius={'md'} variant="outline" color='green' style={{marginTop: "5px"}} onClick={() => handleLogsPageRedirect()}>
                             <IconLogs></IconLogs>
                         </ActionIcon>
+                        </Tooltip>
+
+                        <Tooltip label="Remove Device">
                         <ActionIcon radius={'md'} variant="outline" color='red'>
                             <IconTrash></IconTrash>
                         </ActionIcon>
+                        </Tooltip>
                     </div>
 
                     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
