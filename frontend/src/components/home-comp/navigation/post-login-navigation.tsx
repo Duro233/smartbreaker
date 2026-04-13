@@ -77,6 +77,7 @@ export default function PostLoginNavigation({
       close();
       return;
     }
+    localStorage.removeItem("token");
     navigate(logoutPath);
     close();
   };

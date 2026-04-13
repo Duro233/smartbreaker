@@ -109,17 +109,34 @@
   overflow: visible;
 }
 
+
+
 /* Disabled Button */
 .mantine-Button-root[data-variant="disabled"] {
   background: none;
-  color: var(rgb(240, 85, 85)); 
-  overflow: visible;
+  border: 1px rgb(228, 72, 72) solid;
+  color: rgb(134, 134, 134);
   font-weight: 400;
-  font-size: x-small;
-  height: calc(1.15rem * var(--mantine-scale));
-  width: calc(10rem * var(--mantine-scale));
-  transition: transform 0.2s ease, color 0.2s ease-in-out;
+  
+  transition: background 0.2s ease-in-out;
+  transition: box-shadow 0.1s ease-in-out, transform 0.2s ease;
+  height: calc(1.6rem * var(--mantine-scale));
+  touch-action: manipulation;
 }
+.mantine-Button-root[data-variant="disabled"]:hover {
+  color: var(--app-accent-text);
+  background: rgb(228, 72, 72);
+  box-shadow: 0 1px 15px 1px color-mix(in srgb, rgb(228, 72, 72) 60%, transparent); /* have to do this with glow to actually use variable css styles */
+  transform: scale(1.1);
+  }
+.mantine-Button-root[data-variant="disabled"]:active
+{
+  transform: translateY(2px) scale(1.1);
+}
+
+
+
+
 
 
 /* Navigation Bar */

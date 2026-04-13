@@ -112,7 +112,7 @@ export default function DeviceList({registeredDeviceIDs, payloadsByDeviceID, sta
                         <Progress radius='xs' size='md' value={statusByDeviceID[deviceID] ? 32 : 0} style={{width: '100%'}} striped animated color="green"/>
                         <Text size="xs">{payload ? (temp_val+'° C') : "Temperature = 0.0° C"}</Text>
                     </div>
-                    <Button variant="primary" onClick={() => sendDeviceCommand(deviceID, 'TOGGLE', token? token : '')}>{parseInt(active.split("=")[1]) == 0 ? "ENABLE" : "DISABLE"}</Button>
+                    <Button variant={parseInt(active.split("=")[1]) == 0 ? "disabled" : "primary"} onClick={() => sendDeviceCommand(deviceID, 'TOGGLE', token? token : '')} >{parseInt(active.split("=")[1]) == 0 ? "ENABLE" : "DISABLE"}</Button>
                 </Grid.Col>
             )})}
             </Grid>
