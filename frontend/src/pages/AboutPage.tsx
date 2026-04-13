@@ -33,8 +33,8 @@ export default function AboutPage() {
   
   return (
     <div style={{ maxWidth: "860px", margin: "0 auto", padding: "2rem 1.5rem" }}>
-      <h2>About Us</h2>
-      <p style={{ color: "#666", marginBottom: "2rem" }}>Meet the team.</p>
+      <h2 style={{display:'flex', justifyContent: 'center', margin: 0}}>About Us</h2>
+      <p style={{ color: "#666", marginBottom: "1rem", marginTop: 0, display:'flex', justifyContent: 'center'}}>Meet the team.</p>
 
       {members.map((member, index) => (
         <div
@@ -69,7 +69,7 @@ export default function AboutPage() {
       <hr style={{ border: "none", borderTop: "1px solid #e5e5e5", margin: "2.5rem 0"}} />
 
       <section>
-        <h3>Acknowledgements</h3>
+        <h3 style={{display: "flex", justifyContent: "center"}}>Acknowledgements</h3>
         <p style={{ lineHeight: 1.8, fontSize: "14px", color: "#555"}}>
           We would like to acknowledge the assistance and support of Dr. Qun Zhou Sun, Professor Saleem Sahawneh, and Dr. Arthur Weeks.
         </p>

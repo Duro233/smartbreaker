@@ -21,6 +21,7 @@ import {
   IconLogout,
   IconMoon,
   IconSun,
+  IconLogs,
   type TablerIcon,
 } from '@tabler/icons-react';
 import classes from './NavbarSimple.module.css';
@@ -44,6 +45,7 @@ type PostLoginNavigationProps = {
 const defaultLinks: NavItem[] = [
   { link: '/home', label: 'Home', icon: IconHome },
   { link: '/dashboard', label: 'Dashboard', icon: IconLayoutDashboard },
+  {link: '/logs', label: 'Device Logs', icon: IconLogs},
   { link: '/settings', label: 'Settings', icon: IconSettings },
   { link: '/contact', label: 'Contact', icon: IconMail },
   { link: '/about', label: 'About', icon: IconGripVertical},
@@ -55,7 +57,7 @@ export default function PostLoginNavigation({
   title = 'S.A.B.R.E.',
   version = 'v1.0.0',
   changeAccountPath = '/login',
-  logoutPath = '/login',
+  logoutPath = '/home',
   onLogout,
 }: PostLoginNavigationProps) {
   const navigate = useNavigate();
@@ -77,6 +79,7 @@ export default function PostLoginNavigation({
       close();
       return;
     }
+    localStorage.removeItem("token");
     navigate(logoutPath);
     close();
   };

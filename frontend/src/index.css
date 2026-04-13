@@ -110,6 +110,35 @@
 }
 
 
+
+/* Disabled Button */
+.mantine-Button-root[data-variant="disabled"] {
+  background: none;
+  border: 1px rgb(228, 72, 72) solid;
+  color: rgb(134, 134, 134);
+  font-weight: 400;
+  
+  transition: background 0.2s ease-in-out;
+  transition: box-shadow 0.1s ease-in-out, transform 0.2s ease;
+  height: calc(1.6rem * var(--mantine-scale));
+  touch-action: manipulation;
+}
+.mantine-Button-root[data-variant="disabled"]:hover {
+  color: var(--app-accent-text);
+  background: rgb(228, 72, 72);
+  box-shadow: 0 1px 15px 1px color-mix(in srgb, rgb(228, 72, 72) 60%, transparent); /* have to do this with glow to actually use variable css styles */
+  transform: scale(1.1);
+  }
+.mantine-Button-root[data-variant="disabled"]:active
+{
+  transform: translateY(2px) scale(1.1);
+}
+
+
+
+
+
+
 /* Navigation Bar */
 .mantine-Group-root
 {
@@ -211,7 +240,7 @@
   border: solid 1px gray;
   border-radius: 10px;
   margin: 8px;
-  opacity: 60%;
+  opacity: 40%;
   pointer-events: none;
 }
 
@@ -229,8 +258,9 @@
   display: flex;
   width: 100%;
   height: 0%;
-  flex-direction: row;
+  flex-direction: column-reverse;
   justify-content: flex-end;
+  align-items: flex-end;
 }
 
 .dashboard-container-temperature-area
@@ -241,6 +271,173 @@
   flex-direction: column;
   align-items: center;
 }
+
+
+
+/* Log Charts Styling */
+.logs-chart
+{
+  background-color: var(--app-bg-alt-lighter);
+  border: solid 1px var(--app-accent);
+  width: max(400px, 65vw);
+}
+
+.logs-page-styling
+{
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.logs-metadata-styling-area
+{
+  display: flex;
+  justify-content: space-between;
+}
+
+.logs-buttons
+{
+  display: flex;
+  gap: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+/* Logs Page Popover Styling */
+.device-popover-text
+{
+  color: rgb(218, 218, 218);
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: flex-end;
+  font-size: smaller;
+  padding-right: 9%;
+}
+
+.device-popover-back
+{
+  margin: -13%;
+  /*background-color: var(--app-bg-alt-lighter)*/;
+  background: none;
+  border: 1px solid var(--app-accent-alt-lighter);
+  border-radius: 20px;
+  padding: 12px;
+}
+
+.device-popover-back:hover
+{
+  box-shadow: 0 1px 15px 1px color-mix(in srgb, var(--app-accent-alt-lighter) 20%, transparent);
+  transform: scale(1.01);
+  transition: box-shadow 0.1s ease-in-out, transform 0.2s ease;
+}
+
+.device-popover-input
+{
+  background-color: var(--app-bg);
+}
+
+.device-popover-input:focus
+{
+  border-color: var(--app-accent-alt-lighter);
+}
+
+
+
+
+
+/* Date Picker Styliung */
+.date-input-field
+{
+  background: none;
+  border-color: var(--app-accent-alt-lighter);
+}
+
+.calendar-header
+{
+  background:var(--app-bg-alt-darker);
+  border-radius: 10px;
+}
+
+.calendar-header-control
+{
+  background: none;
+  border-radius: 10px;
+}
+
+.calendar-header-control:hover
+{
+  background-color: #72f3a8;
+}
+
+.calendar-body
+{
+  background: var(--app-bg-alt-darker);
+  border: 1px solid var(--app-accent-alt-lighter);
+  border-radius: 10px;
+}
+
+.calendar-body:hover
+{
+  box-shadow: 0 1px 15px 1px color-mix(in srgb, var(--app-accent-alt-lighter) 20%, transparent);
+  transform: scale(1.01);
+  transition: box-shadow 0.1s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.calendar-time-input
+{
+  background: var(--app-bg-alt-lighter);
+  border: 1px solid var(--app-accent-alt-lighter);
+  border-radius: 6px;
+}
+
+.submit-button
+{
+  color:#2ac76b;
+  background: none;
+  border: 1px solid var(--app-accent-alt-lighter);
+  border-radius: 6px;
+}
+
+.submit-button:hover
+{ 
+  background-color: #35de7b;
+  box-shadow: 0 1px 15px 1px color-mix(in srgb, var(--app-accent-alt-lighter) 40%, transparent);
+  transform: scale(1.1);
+  transition: box-shadow 0.1s ease-in-out, transform 0.2s ease-in-out;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* this is jank but it works so idc */
+.m_38a85659
+{
+  background: none;
+  border: none;
+}
+
+
+
+
+
+
 
 
 

@@ -3,6 +3,7 @@ import { Router } from 'express';
 
 import { setUpDatabaseConnection } from './functions/db_connections/db_access.js';
 import userRoutes from './routes/users_routes/users_routes.js';
+import dataRoutes from './routes/data_routes/data_routes.js';
 
 export function setApp(app, client)
 {	
@@ -11,6 +12,7 @@ export function setApp(app, client)
 
 	
 	router.use('/users', userRoutes);
+	router.use('/data', dataRoutes);
 
 
 	const database_connections = setUpDatabaseConnection(client, mongoose);
