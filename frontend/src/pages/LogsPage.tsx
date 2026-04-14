@@ -127,7 +127,7 @@ export default function LogsPage()
         <div className="logs-metadata-styling-area">
           <Text fw={400} mb="lg">Previous Logs - {deviceID}</Text>
           <Text>
-            {startDate ? new Date(startDate).toLocaleString() : "No start date"} - {endDate ? new Date(endDate).toLocaleString() : "No end date"}
+            {startDate ? new Date(startDate).toLocaleString() + " - ": ""} {endDate ? new Date(endDate).toLocaleString() : ""}
           </Text>
           <div className="logs-buttons">
             <Popover
@@ -174,6 +174,18 @@ export default function LogsPage()
                         timeInput: "calendar-time-input",
                         submitButton: "submit-button"
                       }}
+                    timePickerProps={
+                      {
+                        withDropdown: true,
+                        format: '12h',
+                        classNames: {
+                          input: "calendar-time-input",
+                          section: "calendar-time-section",
+                          controlsListGroup: "calendar-body",
+                          control: "calendar-header-control"
+                        }
+                      }
+                    }
                   />
                   <DateTimePicker
                     label="End Date"
@@ -192,6 +204,17 @@ export default function LogsPage()
                         levelsGroup: "calendar-body",
                         timeInput: "calendar-time-input",
                         submitButton: "submit-button"
+                      }}
+                    timePickerProps={
+                      {
+                        withDropdown: true,
+                        format: '12h',
+                        classNames: {
+                          input: "calendar-time-input",
+                          section: "calendar-time-section",
+                          controlsListGroup: "calendar-body",
+                          control: "calendar-header-control"
+                        }
                       }
                     }
                   />
@@ -224,6 +247,21 @@ export default function LogsPage()
           </div>
         </div>
 
+        <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "12px", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <div style={{ width: "12px", height: "12px", borderRadius: "999px", backgroundColor: "var(--mantine-color-green-6)" }} />
+            <Text size="sm">Current</Text>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <div style={{ width: "12px", height: "12px", borderRadius: "999px", backgroundColor: "var(--mantine-color-orange-6)" }} />
+            <Text size="sm">Temperature</Text>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <div style={{ width: "12px", height: "12px", borderRadius: "2px", backgroundColor: "rgb(255, 123, 123)" }} />
+            <Text size="sm">Inactive</Text>
+          </div>
+        </div>
+
         {chartData.length > 0 ? (
           <AreaChart
             h={320}
@@ -236,19 +274,26 @@ export default function LogsPage()
             withXAxis
             withYAxis
             withRightYAxis
-            yAxisLabel="current"
-            rightYAxisLabel="temperature"
+            yAxisLabel="Current (A)"
+            rightYAxisLabel="Temperature (°C)"
             xAxisProps={{
               type: "number",
               domain: ["dataMin", "dataMax"],
               tickFormatter: (value) => new Date(Number(value)).toLocaleString(),
             }}
+            yAxisProps={{
+              tickFormatter: (value) => `${value} A`,
+            }}
+            rightYAxisProps={{
+              tickFormatter: (value) => `${value} °C`,
+            }}
             tooltipProps={{
               labelFormatter: (value) => new Date(Number(value)).toLocaleString(),
             }}
+            valueFormatter={(value) => `${value}`}
             series={[
-              { name: "current", color: "green.6" },
-              { name: "temperature", color: "orange.6", yAxisId: "right" },
+              { name: "current", label: "Current", color: "green.6" },
+              { name: "temperature", label: "Temperature", color: "orange.6", yAxisId: "right" },
             ]}
           >
             {inactiveReferenceAreas.map((area, index) => (
@@ -260,7 +305,6 @@ export default function LogsPage()
                 fill="rgb(255, 123, 123)"
                 strokeOpacity={1}
                 label={{
-                  value: "Inactive",
                   position: "insideBottom",
                   fontSize: "min(2vw, 15px)"
                 }}
