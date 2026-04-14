@@ -58,7 +58,7 @@ export default function Navigation() {
           {/* Desktop nav links */}
           <Group visibleFrom="sm" gap="xs">
             {links.map((link) => (
-              <Anchor key={link.to} component={RouterLink} className='mantine-Button-root' variant='primary' style={{borderRadius: '8px', paddingLeft: '10px', paddingRight: '10px'}} to={link.to}>
+            <Anchor key={link.to} component={RouterLink} className='mantine-Button-root' variant='primary' style={{borderRadius: '6px', paddingLeft: '15px', paddingRight: '15px'}} to={link.to}>
                 {link.label}
               </Anchor>
             ))}
