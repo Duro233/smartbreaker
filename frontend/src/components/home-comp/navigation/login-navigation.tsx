@@ -15,6 +15,7 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 import { Icon123, IconAdjustments, IconMoon, IconSun, IconHome, IconLayoutDashboard, IconMail, IconSettings, IconSwitchHorizontal, IconLogout} from '@tabler/icons-react';
 import { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 export default function Navigation() {
   const [opened, { toggle, close }] = useDisclosure();
@@ -22,7 +23,9 @@ export default function Navigation() {
   const { setColorScheme, toggleColorScheme } = useMantineColorScheme();
   const computed = useComputedColorScheme('light', {getInitialValueInEffect : true})
   const links = [
-    'Home', 'Login', 'Register']; // placeholder for now
+    { label: 'Login', to: '/login' },
+    { label: 'Register', to: '/register' }
+  ];
 
   return (
     <AppShell
@@ -46,15 +49,17 @@ export default function Navigation() {
               hiddenFrom="sm"
               size="md"
             />
-            <Text fw={900} size='lg' style={{letterSpacing: '0.1em'}}>S.A.B.R.E.</Text>
+            <Anchor component={RouterLink} to="/home" underline="never" c="inherit">
+              <Text fw={900} size='lg' style={{letterSpacing: '0.1em'}}>S.A.B.R.E.</Text>
+            </Anchor>
           </Group>
 
         <Group>
           {/* Desktop nav links */}
           <Group visibleFrom="sm" gap="xs">
             {links.map((link) => (
-              <Anchor key={link} href="#">
-                {link}
+              <Anchor key={link.to} component={RouterLink} className='mantine-Button-root' variant='primary' style={{borderRadius: '8px', paddingLeft: '10px', paddingRight: '10px'}} to={link.to}>
+                {link.label}
               </Anchor>
             ))}
           </Group>
@@ -76,8 +81,8 @@ export default function Navigation() {
       <AppShell.Navbar p="md">
         <Stack>
           {links.map((link) => (
-            <Anchor key={link} href="#" onClick={close}>
-              {link}
+            <Anchor key={link.to} component={RouterLink} to={link.to} onClick={close}>
+              {link.label}
             </Anchor>
           ))}
         </Stack>
