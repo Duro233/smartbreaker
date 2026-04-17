@@ -1,4 +1,11 @@
 /* =========== Defining Color Styles for Light and Dark Mode ============ */
+
+/* Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,176&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,145;1,145&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Display:ital,wght@0,300;1,300&display=swap');
+
+
 /* DARK MODE */
 :root[data-mantine-color-scheme="light"] {
   /* Primary Background Colors & Asssociated Alts */
@@ -19,8 +26,6 @@
  /* Sec. Buttons */
   --app-button-sec: #35de7b;
   --app-button-sec-hover: #2ac76b;
-  
-  
 }
 
 /* LIGHT MODE */
@@ -47,10 +52,6 @@
 
 
 :root {
-  font-family: 'Inter', sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
   background-color: var(--app-bg);
 
   font-synthesis: none;
@@ -195,6 +196,46 @@
   border: 2px;
   border-style: solid;
   border-color: var(--app-accent-alt-darker);
+}
+
+.register-form-area
+{
+  width: min(92vw, 24.5rem);
+  min-height: clamp(20rem, 50vh, 35rem);
+  padding: clamp(2.75rem, 6vh, 4rem) clamp(1.5rem, 4vw, 2.8rem);
+  box-sizing: border-box;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.1rem;
+}
+
+.register-form-input,
+.register-form-name-row,
+.register-form-actions
+{
+  width: 100%;
+}
+
+.register-form-input
+{
+  margin-inline: auto;
+}
+
+.register-form-name-row .register-form-input
+{
+  margin-inline: 0;
+}
+
+.auth-form-error
+{
+  width: 100%;
+  margin: 0.6rem 0 0;
+  text-align: center;
+  font-size: 0.85rem;
+  color: rgb(228, 72, 72);
 }
 
 /* Standard Text Fields */
@@ -427,6 +468,290 @@
 
 
 
+/* Home Page Styling */
+.no-pointer-events
+{
+  pointer-events: none;
+}
+
+.home-page-root
+{
+  width: 100%;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.home-page-content
+{
+  width: min(80%, 78rem);
+}
+
+.home-page-root > .home-page-content + .home-page-content
+{
+  margin-top: clamp(2rem, 5vh, 4rem);
+}
+
+.home-section-title
+{
+  margin: 0 0 1.5rem;
+  font-family: "Raleway", sans-serif;
+  font-weight: 500;
+  font-size: clamp(1rem, 0.9rem + 0.8vw, 1.25rem);
+  line-height: 1.25;
+}
+
+.feature-card:hover
+{
+  box-shadow: 0 1px 15px 1px color-mix(in srgb, var(--app-accent-alt-lighter) 50%, transparent);
+  transform: scale(1.5);
+}
+
+.setup-step-row:hover
+{
+  color: color-mix(in srgb, var(--app-accent-alt-lighter) 90%, transparent);
+  transform: scale(1.5);
+}
+
+.reveal-on-scroll,
+[data-reveal]
+{
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(16px);
+  transition: opacity 420ms ease, transform 420ms ease, background 0.2s ease-in-out, box-shadow 0.1s ease-in-out;
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-visible,
+[data-reveal].is-visible
+{
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce)
+{
+  .reveal-on-scroll,
+  [data-reveal]
+  {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: none;
+  }
+}
+
+.home-hero-section
+{
+  min-height: calc(100svh - 4rem);
+  align-items: center;
+}
+
+.home-hero-layout
+{
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(14rem, 30rem);
+  grid-template-areas:
+    "title image"
+    "heading image"
+    "copy image";
+  column-gap: clamp(1rem, 1.5vw, 3rem);
+  align-items: center;
+}
+
+.small-title
+{
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  grid-area: title;
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin-top: clamp(1.75rem, 4vh, 3.25rem);
+  margin-bottom: 0.1rem;
+  padding: 0.35em 0.9em;
+  border-radius: 999px;
+  background-color: color-mix(in srgb, white 80%, transparent);
+  color: var(--app-accent-text);
+  text-align: left;
+  font-size: clamp(0.85rem, 0.75rem + 0.4vw, 1.1rem);
+  line-height: 1.4;
+  justify-self: start;
+  transition: background-color 0.2s ease-in-out, transform 0.2s ease;
+}
+
+.small-title:hover
+{
+  background-color: var(--app-accent-alt-darker);
+  color: var(--app-accent-text);
+  box-shadow: 0 1px 15px 1px color-mix(in srgb, var(--app-accent-alt-lighter) 30%, transparent); /* have to do this with glow to actually use variable css styles */
+  transform: scale(1.1);
+
+}
+
+.small-title-mobile-break
+{
+  display: none;
+}
+
+.home-hero-heading
+{
+  grid-area: heading;
+  margin: 0;
+  position: relative;
+}
+
+.home-hero-heading-ghost
+{
+  display: block;
+  visibility: hidden;
+}
+
+.home-hero-heading-typed
+{
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.typing-cursor
+{
+  display: inline-block;
+  margin-left: 0.08em;
+  color: var(--app-accent-alt-lighter);
+  animation: typing-cursor-blink 0.9s steps(1, end) infinite;
+}
+
+@keyframes typing-cursor-blink
+{
+  0%,
+  49%
+  {
+    opacity: 1;
+  }
+
+  50%,
+  100%
+  {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce)
+{
+  .typing-cursor
+  {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+.home-hero-copy
+{
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  width: 80%;
+  grid-area: copy;
+  margin: 0;
+  max-width: 70ch;
+}
+
+.home-hero-image
+{
+  grid-area: image;
+  display: block;
+  width: min(90%, 34rem);
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+  margin: 0 auto;
+  justify-self: center;
+}
+
+@media (max-width: 64em)
+{
+  .home-hero-layout
+  {
+    grid-template-columns: minmax(0, 1fr) minmax(12rem, 26rem);
+  }
+
+  .home-hero-image
+  {
+    width: min(100%, 26rem);
+  }
+}
+
+@media (max-width: 48em)
+{
+  .home-page-content
+  {
+    width: 100%;
+    padding-inline: 1rem;
+    box-sizing: border-box;
+  }
+
+  .home-page-root > .home-page-content + .home-page-content
+  {
+    margin-top: 1.5rem;
+  }
+
+  .home-hero-section
+  {
+    min-height: auto;
+    font-size: 10px;
+  }
+
+  .home-hero-layout
+  {
+    display: block;
+  }
+
+  .small-title
+  {
+    display: none;
+    margin-top: 10vh;
+    margin-inline: auto;
+    text-align: center;
+    font-size: clamp(0.8rem, 0.5rem + 0.5vw, 1.2rem);
+  }
+
+  .small-title:hover
+  {
+    background-color: color-mix(in srgb, white 80%, transparent);
+    box-shadow: none; /* have to do this with glow to actually use variable css styles */
+    transform: scale(1.0);
+  }
+
+  .home-hero-heading
+  {
+    margin-top: 10vh;
+    text-align: center;
+  }
+
+  .home-hero-copy
+  {
+    width: 100%;
+    max-width: min(70ch, 100%);
+    margin: 1rem auto 0;
+    text-align: center;
+  }
+
+  .home-hero-image
+  {
+    width: min(72vw, 22rem);
+    margin: 1rem auto;
+  }
+}
+
+
+
+
+
 
 
 
@@ -456,6 +781,7 @@
 
 
 body {
+  font-family: "Noto Sans Display";
   background-color: var(--app-bg);
   position: relative;
   display: flex;
@@ -466,6 +792,34 @@ body {
   min-height: 100vh;
   z-index: -99;
 }
+
+
+
+
+/* Font Styling */
+.roboto-RobotoWeight {
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  font-size: 50px;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+.raleway-raleWay {
+  font-family: "Raleway", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 145;
+  font-style: normal;
+}
+
+
+
+
+
+
+
 
 h1 {
   font-size: 3.2em;

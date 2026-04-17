@@ -2,8 +2,11 @@ import carterImg from "../images/carter.jpg";
 import davidImg from "../images/david.jpg";
 import eliezerImg from "../images/eliezer.jpg";
 import emmanuelImg from "../images/emmanuel.jpg";
+import { useScrollReveal } from "../hooks/useScrollReveal";
 
 export default function AboutPage() {
+  useScrollReveal();
+
   const members = [
     {
       name: "David Durosinmi",
@@ -33,12 +36,14 @@ export default function AboutPage() {
   
   return (
     <div style={{ maxWidth: "860px", margin: "0 auto", padding: "2rem 1.5rem" }}>
-      <h2 style={{display:'flex', justifyContent: 'center', margin: 0}}>About Us</h2>
-      <p style={{ color: "#666", marginBottom: "1rem", marginTop: 0, display:'flex', justifyContent: 'center'}}>Meet the team.</p>
+      <h2 data-reveal style={{display:'flex', justifyContent: 'center', margin: 0}}>About Us</h2>
+      <p data-reveal data-reveal-delay="80" style={{ color: "#666", marginBottom: "1rem", marginTop: 0, display:'flex', justifyContent: 'center'}}>Meet the team.</p>
 
       {members.map((member, index) => (
         <div
           key={member.name}
+          data-reveal
+          data-reveal-delay={String(index * 60)}
           style={{
             border: "1px solid #e5e5e5",
             borderRadius: "12px",
@@ -66,9 +71,9 @@ export default function AboutPage() {
         </div>
       ))}
 
-      <hr style={{ border: "none", borderTop: "1px solid #e5e5e5", margin: "2.5rem 0"}} />
+      <hr data-reveal style={{ border: "none", borderTop: "1px solid #e5e5e5", margin: "2.5rem 0"}} />
 
-      <section>
+      <section data-reveal>
         <h3 style={{display: "flex", justifyContent: "center"}}>Acknowledgements</h3>
         <p style={{ lineHeight: 1.8, fontSize: "14px", color: "#555"}}>
           We would like to acknowledge the assistance and support of Dr. Qun Zhou Sun, Professor Saleem Sahawneh, and Dr. Arthur Weeks.

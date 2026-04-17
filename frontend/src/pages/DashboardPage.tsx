@@ -1,15 +1,18 @@
 import getUser from '../routes/getuser';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDashboardSocket } from '../components/home-comp/useDashboardSocket';
 import DeviceList from '../components/home-comp/DeviceList';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 export default function DashboardPage()
 {
+  useScrollReveal();
+
   const userInfo: any = getUser();
   const token = localStorage.getItem('token');
-  const {authState, devicePayloadsById, deviceStatus, sendDeviceCommand} = useDashboardSocket(token);
+  const {devicePayloadsById, deviceStatus} = useDashboardSocket(token);
 
-  const deviceIDs = useMemo(() => {
+  const deviceIDsFromUser = useMemo(() => {
     if(Array.isArray(userInfo?.regDevices) && userInfo.regDevices.length > 0)
     {
       return userInfo.regDevices.map((id: any) => String(id));
@@ -22,14 +25,24 @@ export default function DashboardPage()
 
     return [];
   }, [userInfo]);
+  const [deviceIDs, setDeviceIDs] = useState<string[]>([]);
+
+  useEffect(() => {
+    setDeviceIDs(deviceIDsFromUser);
+  }, [deviceIDsFromUser]);
 
   return (
-    <div style={{background: 'var(--app-bg)'}}>
+    <div data-reveal style={{background: 'var(--app-bg)'}}>
       <DeviceList
         registeredDeviceIDs={deviceIDs}
         payloadsByDeviceID={devicePayloadsById}
         statusByDeviceID={deviceStatus}
         name={userInfo?.first}
+        onDeviceDeleted={(deviceID) => {
+          setDeviceIDs((currentDeviceIDs) =>
+            currentDeviceIDs.filter((registeredDeviceID) => registeredDeviceID !== deviceID)
+          );
+        }}
       />
     </div>
   );

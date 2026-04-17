@@ -1,12 +1,17 @@
 import { registerUser } from '../routes/auth';
+import { useState } from 'react';
 
-import { Button, Stack, TextInput, PasswordInput} from '@mantine/core';
+import { Button, Group, Stack, TextInput, PasswordInput} from '@mantine/core';
 import { useForm } from '@mantine/form';
 
 import Navigation from '../components/home-comp/navigation/login-navigation';
 import Background from '../components/background/Background';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 export default function Register() {
+  useScrollReveal();
+  const [submitError, setSubmitError] = useState('');
+
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {
@@ -25,6 +30,7 @@ export default function Register() {
   });
 
   const handleSubmit = async (values : any) => {
+    setSubmitError('');
     try {
       const res = await registerUser(values);
       if(res.status === 201)
@@ -33,7 +39,7 @@ export default function Register() {
         window.location.href = '/home';
       }
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Registration failed');
+      setSubmitError(err.response?.data?.message || 'Registration failed');
     }
   };
 
@@ -48,27 +54,9 @@ export default function Register() {
         <Navigation />
       </div>
       <div>
-      <form onSubmit={form.onSubmit((values) => handleSubmit(values))} className='form-borders' style={{padding : '65px 45px 50px 45px'}}>
-        
+      <form data-reveal onSubmit={form.onSubmit((values) => handleSubmit(values))} className='form-borders register-form-area'>
         <TextInput
-          withAsterisk
-          label="First Name"
-          placeholder="First Name"
-          classNames={{ input : 'prim-text-fields'}}
-          key={form.key('firstName')}
-          {...form.getInputProps('firstName')}
-        />
-
-        <TextInput
-          withAsterisk
-          label="Last Name"
-          placeholder="Last Name"
-          classNames={{ input : 'prim-text-fields'}}
-          key={form.key('lastName')}
-          {...form.getInputProps('lastName')}
-        />
-
-        <TextInput
+          className="register-form-input"
           withAsterisk
           label="Email"
           placeholder="your@email.com"
@@ -78,6 +66,7 @@ export default function Register() {
         />
 
         <PasswordInput
+          className="register-form-input"
           withAsterisk
           label="Password"
           placeholder="password"
@@ -86,10 +75,35 @@ export default function Register() {
           {...form.getInputProps('password')}
         />
 
-        <Stack justify="center" align='center' gap='xs' mt="md">
+        <Group className="register-form-name-row" grow wrap="nowrap" align="flex-start" gap="md">
+          <TextInput
+            className="register-form-input"
+            withAsterisk
+            label="First Name"
+            placeholder="first name"
+            classNames={{ input : 'prim-text-fields'}}
+            key={form.key('firstName')}
+            style={{ minWidth: 0 }}
+            {...form.getInputProps('firstName')}
+          />
+
+          <TextInput
+            className="register-form-input"
+            withAsterisk
+            label="Last Name"
+            placeholder="last name"
+            classNames={{ input : 'prim-text-fields'}}
+            key={form.key('lastName')}
+            style={{ minWidth: 0 }}
+            {...form.getInputProps('lastName')}
+          />
+        </Group>
+
+        <Stack className="register-form-actions" justify="center" align='center' gap='xs' mt="md">
           <Button variant="primary" type="submit">Register</Button>
           <Button variant="secondary" onClick={handleLoginRedirect}>Back to Login</Button>
         </Stack>
+        {submitError ? <p className="auth-form-error">{submitError}</p> : null}
       </form>
     <Background />
     </div>

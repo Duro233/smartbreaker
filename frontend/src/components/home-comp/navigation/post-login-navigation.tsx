@@ -93,7 +93,7 @@ export default function PostLoginNavigation({
       }}
     >
       <AppShell.Header>
-        <Group h="100%" px="md" justify="space-between">
+        <Group h="100%" px="md" justify="space-between" >
           <Group gap="sm">
             <Burger opened={mobileOpened} onClick={toggle} hiddenFrom="sm" size="sm" />
             <Text fw={900} size="lg" style={{ letterSpacing: '0.1em' }}>
