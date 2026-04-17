@@ -44,20 +44,21 @@ export default function ContactPage() {
   const fieldStyle: React.CSSProperties = {
     display: "flex",
     flexDirection: "column",
-    gap: "6px",
+    gap: "1px",
     marginBottom: "16px",
   };
 
   const labelStyle: React.CSSProperties = {
     fontSize: "13px",
     fontWeight: 500,
-    color: "#555",
+    color: "#555555",
   };
 
   const inputStyle: React.CSSProperties = {
     padding: "8px 12px",
     borderRadius: "8px",
     border: "1px solid #e0e0e0",
+    background: "none",
     fontSize: "14px",
     outline: "none",
     width: "100%",
