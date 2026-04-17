@@ -12,6 +12,7 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {
+  IconHome,
   IconLayoutDashboard,
   IconMail,
   IconSettings,
