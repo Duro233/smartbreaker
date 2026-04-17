@@ -6,11 +6,14 @@ import { useForm } from '@mantine/form';
 
 import Navigation from '../components/home-comp/navigation/login-navigation';
 import Background from '../components/background/Background';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 //import classes from '../../src/index.css';
 //import '../index.css';
 
 export default function Login() {
+  useScrollReveal();
+  const [submitError, setSubmitError] = useState('');
   
   const form = useForm({
     mode: 'uncontrolled',
@@ -27,6 +30,7 @@ export default function Login() {
 
   const handleSubmit = async (values : any) => {
     console.log(values);
+    setSubmitError('');
     try {
       const res = await loginUser(values);
       localStorage.setItem('token', res.data.token);
@@ -40,7 +44,7 @@ export default function Login() {
         window.location.href = '/dashboard';
       }
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Login failed');
+      setSubmitError(err.response?.data?.message || 'Login failed');
     }
   };
 
@@ -55,7 +59,7 @@ return (
         <Navigation />
     </div>
   <div>  
-    <form onSubmit={form.onSubmit((values) => handleSubmit(values))} className='form-borders' style={{padding : '65px 35px 50px 35px'}}>
+    <form data-reveal onSubmit={form.onSubmit((values) => handleSubmit(values))} className='form-borders' style={{padding : '65px 35px 50px 35px'}}>
         <TextInput
         withAsterisk
         label="Email"
@@ -85,6 +89,7 @@ return (
         <Button variant="primary" type="submit">Login</Button>
         <Button variant="secondary" onClick={handleRegisterRedirect}>Get Registered</Button>
       </Stack>
+      {submitError ? <p className="auth-form-error">{submitError}</p> : null}
     </form>
     <Background />
     </div>

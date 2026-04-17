@@ -1,5 +1,5 @@
 import { ActionIcon, Button, Loader, NativeSelect, Paper, Popover, Stack, Text, TextInput, Tooltip } from "@mantine/core";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { API } from "../routes/auth";
 import { AreaChart } from "@mantine/charts";
 import { ReferenceArea } from "recharts";
@@ -7,6 +7,8 @@ import { IconCalendar, IconId } from "@tabler/icons-react";
 import { useDashboardSocket } from "../components/home-comp/useDashboardSocket";
 import getUser from "../routes/getuser";
 import { DateTimePicker } from "@mantine/dates";
+import { useScrollReveal } from "../hooks/useScrollReveal";
+import { useSearchParams } from "react-router-dom";
 
 type LogEntry = {
   _id: string;
@@ -19,7 +21,11 @@ type LogEntry = {
 
 export default function LogsPage()
 {
+  useScrollReveal();
+
   const userInfo: any = getUser();
+  const [searchParams] = useSearchParams();
+  const selectedDeviceIDFromQuery = (searchParams.get("deviceID") ?? "").trim();
   const token = localStorage.getItem("token");
   useDashboardSocket(token);
 
@@ -39,6 +45,7 @@ export default function LogsPage()
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [datePopoverOpened, setDatePopoverOpened] = useState(false);
+  const [didAutoloadQueryDevice, setDidAutoloadQueryDevice] = useState(false);
 
   const sortedLogs = [...logs]
     .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
@@ -114,16 +121,33 @@ export default function LogsPage()
     getLogs(deviceID);
   }
 
+  useEffect(() => {
+    if(didAutoloadQueryDevice)
+      return;
+
+    if(selectedDeviceIDFromQuery.length === 0)
+    {
+      setDidAutoloadQueryDevice(true);
+      return;
+    }
+
+    if(!deviceIDs.includes(selectedDeviceIDFromQuery))
+      return;
+
+    setDidAutoloadQueryDevice(true);
+    handleDeviceChange(selectedDeviceIDFromQuery);
+  }, [didAutoloadQueryDevice, selectedDeviceIDFromQuery, deviceIDs]);
+
   return (
     <div className="logs-page-styling">
 
       {errorMessage ? (
-        <Text c="red" style={{ marginTop: "16px" }}>
+        <Text data-reveal c="red" style={{ marginTop: "16px" }}>
           {errorMessage}
         </Text>
       ) : null}
 
-      <Paper withBorder p="md" className="logs-chart" style={{ marginTop: "24px" }}>
+      <Paper data-reveal withBorder p="md" className="logs-chart" style={{ marginTop: "24px" }}>
         <div className="logs-metadata-styling-area">
           <Text fw={400} mb="lg">Previous Logs - {deviceID}</Text>
           <Text>

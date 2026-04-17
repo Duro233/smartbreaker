@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useScrollReveal } from "../hooks/useScrollReveal";
 
 interface FormData {
   firstName: string;
@@ -14,6 +15,8 @@ interface FormErrors {
 }
 
 export default function ContactPage() {
+  useScrollReveal();
+
   const [form, setForm] = useState<FormData>({
     firstName: "",
     lastName: "",
@@ -68,14 +71,14 @@ export default function ContactPage() {
 
   return (
     <div style={{ width: "100%", padding: "2rem 1.5rem", boxSizing: "border-box" }}>
-      <h2 style={{ margin: "0 0 0.25rem" }}>Contact us</h2>
-      <p style={{ fontSize: "14px", color: "#777", marginBottom: "2rem" }}>
+      <h2 data-reveal style={{ margin: "0 0 0.25rem" }}>Contact us</h2>
+      <p data-reveal data-reveal-delay="80" style={{ fontSize: "14px", color: "#777", marginBottom: "2rem" }}>
         Fill out the form below and we'll get back to you shortly.
       </p>
 
       {/* First + Last name row */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "12px", marginBottom: "16px" }}>
-        <div style={fieldStyle}>
+      <div data-reveal data-reveal-delay="120" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "12px", marginBottom: "16px" }}>
+        <div data-reveal style={fieldStyle}>
           <label style={labelStyle}>First name</label>
           <input
             style={inputStyle}
@@ -86,7 +89,7 @@ export default function ContactPage() {
           />
           {errors.firstName && <span style={errorStyle}>{errors.firstName}</span>}
         </div>
-        <div style={fieldStyle}>
+        <div data-reveal data-reveal-delay="60" style={fieldStyle}>
           <label style={labelStyle}>Last name</label>
           <input
             style={inputStyle}
@@ -100,7 +103,7 @@ export default function ContactPage() {
       </div>
 
       {/* Email */}
-      <div style={fieldStyle}>
+      <div data-reveal data-reveal-delay="180" style={fieldStyle}>
         <label style={labelStyle}>Email</label>
         <input
           style={inputStyle}
@@ -113,7 +116,7 @@ export default function ContactPage() {
       </div>
 
       {/* Message */}
-      <div style={fieldStyle}>
+      <div data-reveal data-reveal-delay="240" style={fieldStyle}>
         <label style={labelStyle}>
           Message <span style={{ fontWeight: 400, color: "#aaa" }}>(optional)</span>
         </label>
@@ -126,6 +129,8 @@ export default function ContactPage() {
       </div>
 
       <button
+        data-reveal
+        data-reveal-delay="300"
         onClick={handleSubmit}
         disabled={submitted}
         style={{
@@ -143,7 +148,7 @@ export default function ContactPage() {
       </button>
 
       {submitted && (
-        <p style={{ marginTop: "16px", fontSize: "14px", color: "#2e7d32", textAlign: "center" }}>
+        <p data-reveal style={{ marginTop: "16px", fontSize: "14px", color: "#2e7d32", textAlign: "center" }}>
           Your message has been sent. We'll be in touch soon.
         </p>
       )}

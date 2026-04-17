@@ -1,12 +1,15 @@
 import { useDashboardSocket } from "./useDashboardSocket";
 import { Box, Center, RingProgress, Grid, Text, ActionIcon, Progress, Button, Loader, Tooltip} from "@mantine/core";
 import { IconTrash, IconLogs} from "@tabler/icons-react";
+import { useState } from "react";
+import { removeDeviceFromUser } from "../../routes/auth";
 
 type DevicePayloadListProps = {
     registeredDeviceIDs: string[];
     payloadsByDeviceID: Record<string, string>;
     statusByDeviceID: Record<string, boolean>;
-    name: string[];
+    name?: string;
+    onDeviceDeleted?: (deviceID: string) => void;
 }
 
 type ParsedPayload = {
@@ -33,16 +36,40 @@ function splitPayload(payload: string | undefined, delimiter = "|"): ParsedPaylo
 }
 
 
-const handleLogsPageRedirect = () =>
+const handleLogsPageRedirect = (deviceID: string) =>
 {
-    window.location.href='/logs';
+    window.location.href=`/logs?deviceID=${encodeURIComponent(deviceID)}`;
 }
 
-export default function DeviceList({registeredDeviceIDs, payloadsByDeviceID, statusByDeviceID, name} : DevicePayloadListProps)
+export default function DeviceList({registeredDeviceIDs, payloadsByDeviceID, statusByDeviceID, name, onDeviceDeleted} : DevicePayloadListProps)
 {
     const token = localStorage.getItem('token');
     const {sendDeviceCommand} = useDashboardSocket(token);
     const ringSize = 200
+    const [deleteError, setDeleteError] = useState("");
+    const [deletingDeviceID, setDeletingDeviceID] = useState("");
+
+    const handleRemoveDevice = async (deviceID: string) =>
+    {
+        if(deletingDeviceID.length > 0)
+            return;
+
+        setDeleteError("");
+        setDeletingDeviceID(deviceID);
+        try
+        {
+            await removeDeviceFromUser({deviceID});
+            onDeviceDeleted?.(deviceID);
+        }
+        catch(error: any)
+        {
+            setDeleteError(error?.response?.data?.message ?? "Failed to remove device");
+        }
+        finally
+        {
+            setDeletingDeviceID("");
+        }
+    };
 
     if(registeredDeviceIDs.length === 0)
         return(
@@ -52,7 +79,8 @@ export default function DeviceList({registeredDeviceIDs, payloadsByDeviceID, sta
         )
     return (
         <>
-            <h2 style={{ display: 'flex', justifyContent: 'center' }}> Welcome Back {name}!</h2>
+            <h2 style={{ display: 'flex', justifyContent: 'left', fontSize:"1em"}}> Welcome Back {name}</h2>
+            {deleteError ? <Text c="red" size="sm" mb="sm">{deleteError}</Text> : null}
             <Grid grow gutter="lg"> 
                 {registeredDeviceIDs.map((deviceID) => {
                     const payload = payloadsByDeviceID[deviceID];
@@ -69,13 +97,13 @@ export default function DeviceList({registeredDeviceIDs, payloadsByDeviceID, sta
                     {/* Delete/Log Button Styling */}
                     <div className="dashboard-container-action-icon-area">
                         <Tooltip label="View Logs">
-                        <ActionIcon radius={'md'} variant="outline" color='green' style={{marginTop: "5px"}} onClick={() => handleLogsPageRedirect()}>
+                        <ActionIcon radius={'md'} variant="outline" color='green' style={{marginTop: "5px"}} onClick={() => handleLogsPageRedirect(deviceID)}>
                             <IconLogs></IconLogs>
                         </ActionIcon>
                         </Tooltip>
 
                         <Tooltip label="Remove Device">
-                        <ActionIcon radius={'md'} variant="outline" color='red'>
+                        <ActionIcon radius={'md'} variant="outline" color='red' disabled={deletingDeviceID === deviceID} onClick={() => handleRemoveDevice(deviceID)}>
                             <IconTrash></IconTrash>
                         </ActionIcon>
                         </Tooltip>

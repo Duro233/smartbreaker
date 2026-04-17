@@ -22,6 +22,9 @@ export const registerUser = (data: any) =>
 export const loginUser = (data: any) =>
   API.post('/users/loginUser', data);
 
+export const removeDeviceFromUser = (data: { deviceID: string }) =>
+  API.post('/users/removeDevice', data);
+
 //export const getUser = (data: any) =>
   //API.get('users/getUser', data);
 

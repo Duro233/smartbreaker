@@ -124,3 +124,33 @@ export async function userOwnsDevice({userID, deviceID})
 
     return devices.includes(normalizedDeviceID);
 }
+
+export async function removeDeviceFromUser({token, deviceID})
+{
+    if(typeof deviceID !== "string" || deviceID.trim().length === 0)
+        return {success: false, error: "INVALID_DEVICE_ID"};
+
+    const user = await getUser(token);
+    if(!user)
+        return {success: false, error: "AUTH_FAILED"};
+
+    const normalizedDeviceID = deviceID.trim();
+    const devices = Array.isArray(user.devices)
+        ? user.devices
+        : (Array.isArray(user.devices?.ofString) ? user.devices.ofString : []);
+
+    const hasDevice = devices.includes(normalizedDeviceID);
+    if(!hasDevice)
+        return {success: false, error: "DEVICE_NOT_FOUND"};
+
+    user.devices = devices.filter((registeredDeviceID) => registeredDeviceID !== normalizedDeviceID);
+    user.markModified("devices");
+    await user.save();
+
+    return {
+        success: true,
+        userID: user.userID,
+        deviceID: normalizedDeviceID,
+        devices: Array.isArray(user.devices) ? user.devices : []
+    };
+}
