@@ -664,7 +664,7 @@
 {
   grid-area: image;
   display: block;
-  width: min(90%, 34rem);
+  width: min(95%, 34rem);
   max-width: 100%;
   height: auto;
   object-fit: contain;
