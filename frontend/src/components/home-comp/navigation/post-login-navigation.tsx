@@ -15,7 +15,7 @@ import {
   IconHome,
   IconLayoutDashboard,
   IconMail,
-  IconSettings,
+  //IconSettings,
   IconGripVertical,
   IconSwitchHorizontal,
   IconLogout,
@@ -45,7 +45,7 @@ type PostLoginNavigationProps = {
 const defaultLinks: NavItem[] = [
   { link: '/dashboard', label: 'Dashboard', icon: IconLayoutDashboard },
   {link: '/logs', label: 'Device Logs', icon: IconLogs},
-  { link: '/settings', label: 'Settings', icon: IconSettings },
+  //{ link: '/settings', label: 'Settings', icon: IconSettings },
   { link: '/contact', label: 'Contact', icon: IconMail },
   { link: '/about', label: 'About', icon: IconGripVertical},
 ];
