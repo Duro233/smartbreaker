@@ -1,16 +1,18 @@
 import { Router } from 'express';
+import { getUser } from '../../functions/user_functions/user_functions.js';
 
 const router = Router();
 
-// GET current settings for a user
-router.get('/:userId', async (req, res) => {
+// GET current settings
+router.get('/', async (req, res) => {
   try {
-    const db = req.app.locals.db;
-    const user = await db.collection('users').findOne({ _id: req.params.userId });
-    if (!user) return res.status(404).json({ error: 'User not found' });
+    const token = req.headers.authorization?.split(' ')[1];
+    const user = await getUser(token);
+    if (!user) return res.status(401).json({ error: 'AUTH_FAILED' });
 
     res.json({
-      name: user.name,
+      firstName: user.firstName,
+      lastName: user.lastName,
       email: user.email,
       notifications: user.notifications ?? {
         emailAlerts: true,
@@ -24,17 +26,27 @@ router.get('/:userId', async (req, res) => {
 });
 
 // PATCH — save updated settings
-router.patch('/:userId', async (req, res) => {
+router.patch('/', async (req, res) => {
   try {
-    const db = req.app.locals.db;
-    const { name, email, notifications } = req.body;
+    const token = req.headers.authorization?.split(' ')[1];
+    const user = await getUser(token);
+    if (!user) return res.status(401).json({ error: 'AUTH_FAILED' });
 
-    await db.collection('users').updateOne(
-      { _id: req.params.userId },
-      { $set: { name, email, notifications } }
-    );
+    const { firstName, lastName, email, notifications } = req.body;
 
+    if (firstName) user.firstName = firstName;
+    if (lastName)  user.lastName  = lastName;
+    if (email)     user.email     = email;
+    if (notifications) user.notifications = notifications;
+
+    await user.save();
     res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to save settings' });
+  }
+});
+
+export default router;    res.json({ success: true });
   } catch (err) {
     res.status(500).json({ error: 'Failed to save settings' });
   }
