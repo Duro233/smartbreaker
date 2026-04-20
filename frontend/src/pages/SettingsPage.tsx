@@ -10,14 +10,18 @@ export default function SettingsPage() {
 
   const handleSave = async () => {
   try {
-    const userId = 'USER_ID_HERE'; //add id
+    const token = localStorage.getItem('token'); // or wherever you store it
 
-    const res = await fetch(`/api/settings/${userId}`, {
+    const res = await fetch('/api/settings', {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
       body: JSON.stringify({
-        name: profile.name,
-        email: profile.email,
+        firstName: profile.firstName,
+        lastName:  profile.lastName,
+        email:     profile.email,
         notifications,
       }),
     });
@@ -30,7 +34,7 @@ export default function SettingsPage() {
     alert('Could not save settings. Please try again.');
   }
 };
-
+  
   const rowStyle = {
     display: "flex", alignItems: "center", justifyContent: "space-between",
     padding: "0.875rem 1.25rem", borderBottom: "1px solid #e5e5e5", gap: "1rem",
