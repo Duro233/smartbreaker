@@ -8,11 +8,28 @@ export default function SettingsPage() {
   const [saved, setSaved] = useState(false);
   useScrollReveal();
 
-  const handleSave = () => {
-    // wire to your Express API: PATCH /api/settings
+  const handleSave = async () => {
+  try {
+    const userId = 'USER_ID_HERE'; //add id
+
+    const res = await fetch(`/api/settings/${userId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: profile.name,
+        email: profile.email,
+        notifications,
+      }),
+    });
+
+    if (!res.ok) throw new Error('Save failed');
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
-  };
+  } catch (err) {
+    console.error(err);
+    alert('Could not save settings. Please try again.');
+  }
+};
 
   const rowStyle = {
     display: "flex", alignItems: "center", justifyContent: "space-between",
