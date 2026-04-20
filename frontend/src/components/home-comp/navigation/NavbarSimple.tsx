@@ -3,7 +3,7 @@ import {
   IconHome,
   IconLayoutDashboard,
   IconMail,
-  IconSettings,
+  //IconSettings,
   IconSwitchHorizontal,
   IconLogout,
 } from '@tabler/icons-react';
