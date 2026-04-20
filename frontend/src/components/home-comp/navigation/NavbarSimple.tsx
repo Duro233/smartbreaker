@@ -14,7 +14,7 @@ const data = [
   { link: '/home', label: 'Home', icon: IconHome },
   { link: '/dashboard', label: 'Dashboard', icon: IconLayoutDashboard },
   { link: '/contact', label: 'Contact', icon: IconMail },
-  { link: '/settings', label: 'Settings', icon: IconSettings },
+  //{ link: '/settings', label: 'Settings', icon: IconSettings },
 ];
 
 export function NavbarSimple() {
