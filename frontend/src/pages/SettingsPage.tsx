@@ -8,7 +8,7 @@ export default function SettingsPage() {
   const [saved, setSaved] = useState(false);
   useScrollReveal();
 
-  const handleSave = async () => {
+  /*const handleSave = async () => {
   try {
     const token = localStorage.getItem('token'); // or wherever you store it
 
@@ -33,7 +33,7 @@ export default function SettingsPage() {
     console.error(err);
     alert('Could not save settings. Please try again.');
   }
-};
+};*/
   
   const rowStyle = {
     display: "flex", alignItems: "center", justifyContent: "space-between",
