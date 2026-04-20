@@ -59,6 +59,6 @@ jobs:
           if echo "$CHANGED" | grep -qE '^(smartbreaker/)?frontend/'; then
             cd /var/www/thesmartbuilder.xyz/smartbreaker/frontend || cd /var/www/thesmartbuilder.xyz/frontend
             npm ci
-            npm run build
+            NODE_OPTIONS=--max-old-space-size=4096 npm run build
           fi
         EOF

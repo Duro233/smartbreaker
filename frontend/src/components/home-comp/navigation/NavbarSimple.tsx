@@ -22,7 +22,7 @@ export function NavbarSimple() {
   const location = useLocation();
 
   const links = data.map((item) => (
-    
+    <a
       className={classes.link}
       data-active={location.pathname === item.link || undefined}
       href={item.link}
@@ -44,41 +44,33 @@ export function NavbarSimple() {
           <Text fw={900} size="xl" style={{ letterSpacing: '0.1em' }}>
             S.A.B.R.E.
           </Text>
-        </Group>
-        {links}
-      </div>
-      <div className={classes.footer}>
-        <a className={classes.link} href="#" onClick={(e) => { e.preventDefault(); navigate('/login'); }}>
-          <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} />
-          <span>Change account</span>
-        </a>
-        <a className={classes.link} href="#" onClick={(e) => { e.preventDefault(); navigate('/login'); }}>
-          <IconLogout className={classes.linkIcon} stroke={1.5} />
-          <span>Logout</span>
-        </a>
-      </div>
-    </nav>
-  );
-}    </a>
-  ));
-
-  return (
-    <nav className={classes.navbar}>
-      <div className={classes.navbarMain}>
-        <Group className={classes.header} justify="space-between">
-          <Text fw={900} size="xl" style={{ letterSpacing: '0.1em' }}>
-            S.A.B.R.E.
-          </Text>
           <Code fw={700}>v1.0.0</Code>
         </Group>
+
         {links}
       </div>
+
       <div className={classes.footer}>
-        <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
+        <a
+          className={classes.link}
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate('/login');
+          }}
+        >
           <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} />
           <span>Change account</span>
         </a>
-        <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
+
+        <a
+          className={classes.link}
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate('/login');
+          }}
+        >
           <IconLogout className={classes.linkIcon} stroke={1.5} />
           <span>Logout</span>
         </a>

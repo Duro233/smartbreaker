@@ -1,13 +1,9 @@
 import axios from 'axios';
-//import { buildPath } from '../utils';
-
-// Build URL path based on whether in prod or dev
-//onst url = buildPath();
-//const url = buildPath();
 
 export const API = axios.create({
   baseURL: 'http://thesmartbuilder.xyz/api',
   //baseURL: url + '/api', 
+  //baseURL: 'http://localhost:5000/api',
   headers: {
     'Content-Type': 'application/json'
   }
@@ -25,6 +21,9 @@ export const registerUser = (data: any) =>
 
 export const loginUser = (data: any) =>
   API.post('/users/loginUser', data);
+
+export const removeDeviceFromUser = (data: { deviceID: string }) =>
+  API.post('/users/removeDevice', data);
 
 //export const getUser = (data: any) =>
   //API.get('users/getUser', data);

@@ -18,7 +18,7 @@ const app = express();
 
 /* Imports associated with setting up full-duplex communication 
 through websockets.
-Server (socket.io) is what is used for React -> Node Communication
+Server (socket.io) is what is used for Frontend(dashboard) -> Node Communication
 WebSocket (ws) is what is used for ESP32 -> Node Communication*/
 import http from 'http';
 import { Server } from 'socket.io';
@@ -43,7 +43,7 @@ const io = new Server(server,
     cors:
     {
       // Use the port associated with the frontend? (idk what this looks like in prod)
-      origin: "http://134.199.198.51",
+      origin: [...allowedOrigins, "http://134.199.198.51"],
       methods: ["GET", "POST"]
     }
   }
@@ -93,6 +93,7 @@ app.use((req, res, next) =>
     );
     next();
 });
+
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, "0.0.0.0", () => {

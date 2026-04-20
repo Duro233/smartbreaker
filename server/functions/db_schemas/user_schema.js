@@ -44,7 +44,15 @@ const userSchema = new mongoose.Schema(
 
     devices:
     {
-        ofString: [String]
+        type: [String],
+        default: []
+    },
+
+    notifications: 
+    {
+      emailAlerts:  { type: Boolean, default: true  },
+      tripAlerts:   { type: Boolean, default: true  },
+      offlineAlerts:{ type: Boolean, default: false },
     }
     }
 );

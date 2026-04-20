@@ -13,15 +13,19 @@ import {
   MantineProvider
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { Icon123, IconAdjustments, IconMoon, IconSun } from '@tabler/icons-react';
+import { Icon123, IconAdjustments, IconMoon, IconSun, IconHome, IconLayoutDashboard, IconMail, IconSettings, IconSwitchHorizontal, IconLogout} from '@tabler/icons-react';
 import { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 export default function Navigation() {
   const [opened, { toggle, close }] = useDisclosure();
   //const [toggleNight, setToggleNight] = useState(true);
   const { setColorScheme, toggleColorScheme } = useMantineColorScheme();
   const computed = useComputedColorScheme('light', {getInitialValueInEffect : true})
-  const links = ['Home', 'Dashboard', 'Settings']; // placeholder for now
+  const links = [
+    { label: 'Login', to: '/login' },
+    { label: 'Register', to: '/register' }
+  ];
 
   return (
     <AppShell
@@ -37,7 +41,7 @@ export default function Navigation() {
       <AppShell.Header>
         <Group h="100%" px="md" justify="space-between">
           {/* Left side */}
-          <Group>
+          <Group gap='sm'>
             <Burger
               opened={opened}
               onClick={toggle}
@@ -45,16 +49,22 @@ export default function Navigation() {
               hiddenFrom="sm"
               size="md"
             />
-            <Text fw={700}>SABRE Smart Breaker</Text>
+            <Anchor component={RouterLink} to="/home" underline="never" c="inherit">
+              <Text fw={900} size='lg' style={{letterSpacing: '0.1em'}}>S.A.B.R.E.</Text>
+            </Anchor>
           </Group>
 
+        <Group>
           {/* Desktop nav links */}
-          <Group visibleFrom="sm" gap="lg">
+          <Group visibleFrom="sm" gap="xs">
             {links.map((link) => (
-              <Anchor key={link} href="#">
-                {link}
+            <Anchor key={link.to} component={RouterLink} className='mantine-Button-root' variant='primary' style={{borderRadius: '6px', paddingLeft: '15px', paddingRight: '15px'}} to={link.to}>
+                {link.label}
               </Anchor>
             ))}
+          </Group>
+          
+          <Group>
             <Anchor>
                 <ActionIcon radius='sm' aria-label='toggle' className="navToggle" onClick={() => toggleColorScheme()}>
                     {computed === 'light' ? <IconMoon /> : <IconSun /> }
@@ -62,14 +72,17 @@ export default function Navigation() {
             </Anchor>
           </Group>
         </Group>
+            
+
+        </Group>
       </AppShell.Header>
 
       {/* MOBILE NAVBAR */}
       <AppShell.Navbar p="md">
         <Stack>
           {links.map((link) => (
-            <Anchor key={link} href="#" onClick={close}>
-              {link}
+            <Anchor key={link.to} component={RouterLink} to={link.to} onClick={close}>
+              {link.label}
             </Anchor>
           ))}
         </Stack>
