@@ -11,7 +11,7 @@ import Register from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
 import DashboardPage from './pages/DashboardPage';
 import ContactPage from './pages/ContactPage';
-import SettingsPage from './pages/SettingsPage';
+//import SettingsPage from './pages/SettingsPage';
 import AboutPage from './pages/AboutPage';
 import LogsPage from './pages/LogsPage';
 import PostLoginNavigation from './components/home-comp/navigation/post-login-navigation';
@@ -43,7 +43,7 @@ export default function App() {
                 { /*<Route path='/home' element={<HomePage />} /> */}
                 <Route path='/dashboard' element={<DashboardPage />} />
                 <Route path='/contact' element={<ContactPage />} />
-                <Route path='/settings' element={<SettingsPage />} />
+              { /*<Route path='/settings' element={<SettingsPage />} /> */ }
                 <Route path='/about' element={<AboutPage />} />
                 <Route path='/logs' element={<LogsPage />} />
               </Routes>
